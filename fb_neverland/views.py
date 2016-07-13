@@ -21,20 +21,23 @@ class NeverlandView(generic.View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return generic.View.dispatch(self, request, *args, **kwargs)
-'''
+
     def post(self, request, *args, **kwargs):
         pprint("Message received")
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         pprint("print incoming_message:")
         pprint(incoming_message)
         for entry in incoming_message['entry']:
+            pprint("Sender ID: ")
+            pprint(entry['id'])
             for message in entry['messaging']:
                 if 'message' in message:
                     pprint("Text in Message")
-                    pprint(message)
+                    pprint(message['message']['text'])
         return HttpResponse()
-'''
 
+
+'''
     def post(self, request, *args, **kwargs):
         pprint("Message received")
         incoming_message = json.loads(self.request.body.decode('utf-8'))
@@ -52,6 +55,6 @@ class NeverlandView(generic.View):
                 pprint("print text message")
                 pprint(message['message']['text'])
         return HttpResponse()
- 
+'''
 
  
