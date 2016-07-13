@@ -101,6 +101,7 @@ def submit_first_pic(UID):
 def handle_payload(UID, payload):
     pprint("Handling payload..")
     if payload == "USER_PRESSED_YES":
+        #handler.update_relation
         send_message(UID, "You said yes!")
     elif payload == "USER_PRESSED_NO":
         send_message(UID, "You said no!" )
@@ -161,5 +162,4 @@ class NeverlandView(generic.View):
                                     pprint("IMAGE: %s" % img)
                                     send_choice(UID, img)
         return HttpResponse()
-
 
