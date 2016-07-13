@@ -202,13 +202,13 @@ def handle_payload(UID, payload):
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
     elif payload == "GENDER_FEMALE":
-        handler.update_user(UID,{'preferred_gender':0, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':0, 'temp':'image'})
         send_message(UID,"Preferred gender set to female.")
     elif payload == "GENDER_MALE":
-        handler.update_user(UID,{'preferred_gender':1, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':1, 'temp':'image'})
         send_message(UID,"Preferred gender set to male.")
     elif payload == "GENDER_BOTH":
-        handler.update_user(UID,{'preferred_gender':2, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':2, 'temp':'image'})
         send_message(UID,"Preferred gender set to both.")
 
 
@@ -249,15 +249,18 @@ class NeverlandView(generic.View):
                     if 'text' in msg:
                         text = msg['text']
                         item = handler.get_user(UID).temp
-                        if item != "null":
+                        if item == "image":
+                            send_message(UID,"Please send your first picture")
+                        elif item != "null":
                             handler.update_user(UID, {item:text})
                             if not handler.get_user(UID).flag :
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
-                                elif item == "preferred_age_below":
-                                    handle_payload(UID,"AGE_MAX")
                                 elif item == "preferred_age_above":
+                                    handle_payload(UID,"AGE_MAX")
+                                elif item == "preferred_age_below":
                                     handle_payload(UID,"USER_SET_GENDER")
+
                         elif text == "settings":
                             setting_buttons(UID)
                         else:
