@@ -26,12 +26,17 @@ def get_started():
     pprint(status.json())
 
 
-def send_message(fb_id, message):
-    post_message_url = "%s/messages?access_token=%s" % (FACEBOOK_GRAPH, PAGE_ACCESS_TOKEN)
-    response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"text": message}})
+def post_facebook_message(fb_id, send_message):
+    post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
+    response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"text": send_message}})
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
     pprint(status.json())
 
+def post_facebook_image(fb_id, send_image):
+    post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
+    response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"attachment":{"type":"image","payload":{"url":send_image}}}})
+    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
+    pprint(status.json())
 
 # Create your views here.
 class NeverlandView(generic.View):
@@ -56,12 +61,23 @@ class NeverlandView(generic.View):
         for entry in incoming_message['entry']:
             pprint("Sender ID: ")
             pprint(entry['id'])
-            for message in entry['messaging']:
-                if 'message' in message and 'text' in message['message']:
-                    pprint("[LOG] Has message")
-                    pprint(message['message']['text'])
-                    pprint("User ID: %s" % (message['sender']['id']))
-                    send_message(message['sender']['id'], message['message']['text'])
+            string UID = entry['id']
+            string msg
+            string img
+            string RID
+            if TRUE #user.check(UID)['success']:
+                string RID = user.current_RID(UID)
+                for message in entry['messaging']:
+                    if 'message' in message:
+                        msg = message['message']['text']
+                        post_facebook_message(UID,msg)
+                    if 'attachments' in message:
+                        img = message['attachments']['payload']['url']
+                        post_facebook_image(UID,img)
+            else
+                pprint(user.check(UID)['message'])
+                post_facebook_message(message['sender']['id'],"Need Setting")
+
         return HttpResponse()
 
 
