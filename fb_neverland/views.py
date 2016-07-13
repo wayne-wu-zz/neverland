@@ -24,7 +24,6 @@ def greeting_message():
     pprint(status.json())
 
 
-
 def post_facebook_message(fb_id, send_message):
     post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
     response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"text": send_message}})
@@ -35,10 +34,9 @@ def post_facebook_message(fb_id, send_message):
 # Create your views here.
 class NeverlandView(generic.View):
 
-    greeting_message()
-
     def get(self, request, *args, **kwargs):
         if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
+            greeting_message()
             return HttpResponse(self.request.GET['hub.challenge'])
         else:
             return HttpResponse('Error, invalid token')
