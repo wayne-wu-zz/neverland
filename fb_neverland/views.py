@@ -91,12 +91,85 @@ def get_profile(UID):
 
 def initialize(UID):
     profile = get_profile(UID)
-    send_message(UID, "Welcome %s!" % profile['first_name'])
+    send_message(UID, "Welcome %s! What would you like to be called?" % profile['first_name'])
+    handler.update_user(UID, {'temp':'nick_name'})
     #TODO: Create User db
 
 def submit_first_pic(UID):
     #submit the first picture to start
-    pass
+    send_message(UID, "Please submit a photo to start your journey!")
+    handler.update_user(UID,{'temp':'profile_pic'})
+
+def setting_buttons(fb_id):
+    message_data = json.dumps(
+        {"recipient": {"id": fb_id},
+         "message":{ "attachment":{"type":"template","payload":{
+         "template_type":"button",
+         "text":"Setting",
+         "buttons":[
+              {
+                "type":"postback",
+                "title":"Set Nickname",
+                "payload": "USER_SET_NAME"
+              },
+              {
+                "type":"postback",
+                "title":"Set Gender Filter",
+                "payload":"USER_SET_GENDER"
+              },
+              {
+                "type":"postback",
+                "title":"Set Age Filter",
+                "payload":"USER_SET_AGE"
+              }]
+              }}}})
+    call_send_api(message_data)
+
+def setting_gender(fb_id):
+    message_data = json.dumps(
+        {"recipient": {"id": fb_id},
+         "message":{ "attachment":{"type":"template","payload":{
+         "template_type":"button",
+         "text":"Gender Filter",
+         "buttons":[
+              {
+                "type":"postback",
+                "title":"MALE",
+                "payload": "GENDER_MALE"
+              },
+              {
+                "type":"postback",
+                "title":"FEMALE",
+                "payload":"GENDER_FEMALE"
+              },
+              {
+                "type":"postback",
+                "title":"BOTH",
+                "payload":"GENDER_BOTH"
+              }]
+              }}}})
+    call_send_api(message_data)
+
+
+def setting_age(fb_id):
+    message_data = json.dumps(
+        {"recipient": {"id": fb_id},
+         "message":{ "attachment":{"type":"template","payload":{
+         "template_type":"button",
+         "text":"Age Range",
+         "buttons":[
+              {
+                "type":"postback",
+                "title":"MAX",
+                "payload": "AGE_MAX"
+              },
+              {
+                "type":"postback",
+                "title":"MIN",
+                "payload":"AGE_MIN"
+              }]
+              }}}})
+    call_send_api(message_data)
 
 def handle_payload(UID, payload):
     pprint("Handling payload..")
@@ -105,10 +178,32 @@ def handle_payload(UID, payload):
     elif payload == "USER_PRESSED_NO":
         send_message(UID, "You said no!" )
     elif payload == "USER_PRESSED_GIVE_ME_MORE":
-        send_message(UID, "Give me more!"),
+        send_message(UID, "You said give me more!")
     elif payload == "GET_STARTED":
         initialize(UID)
-        #TODO: Call settings
+        setting_buttons(UID)
+    elif payload == "USER_SET_NAME":
+        send_message(UID,"What would you like to be called?")
+        handler.user.update_user(UID,{'temp':'nick_name'})
+    elif payload == "USER_SET_AGE":
+        setting_age(UID)
+    elif payload == "AGE_MIN":
+        send_message(UID,"Please enter a number for the minimum age.")
+        handler.user.update_user(UID,{'temp':'preferred_age_above'})
+    elif payload == "AGE_MAX":
+        send_message(UID,"Please enter a number for the maximum age.")
+        handler.user.update_user(UID,{'temp':'preferred_age_below'})       
+    elif payload == "USER_SET_GENDER":
+        setting_gender(UID)
+    elif payload == "GENDER_FEMALE":
+        handler.user.update_user(UID,{'preferred_gender':0, 'temp':'null'})
+        send_message(UID,"Preferred gender set to female.")
+    elif payload == "GENDER_MALE":
+        handler.user.update_user(UID,{'preferred_gender':1, 'temp':'null'})
+        send_message(UID,"Preferred gender set to male.")
+    elif payload == "GENDER_BOTH":
+        handler.user.update_user(UID,{'preferred_gender':2, 'temp':'null'})
+        send_message(UID,"Preferred gender set to both.")
 
 
 
@@ -147,6 +242,21 @@ class NeverlandView(generic.View):
                     msg = message['message']
                     if 'text' in msg:
                         text = msg['text']
+                        item = handler.user.get_user(UID).temp
+                    if item != "null":
+                        handler.user.update_user(UID,{item=text})
+                        if not handler.user.get_user(UID).flag :
+                            if item == "nick_name":
+                                handle_payload(UID,"AGE_MIN")
+                            elif item == "preferred_age_below":
+                                handle_payload(UID,"AGE_MAX")
+                            elif temp == "preferred_age_above":
+                                handle_payload(UID,"USER_SET_GENDER")
+                    elif text == "settings":
+                        setting_buttons(UID)
+                    else:
+                        send_message(UID, text)
+
                         if text == "settings":
                             pass
                         else:
