@@ -28,13 +28,9 @@ class NeverlandView(generic.View):
         pprint("print incoming_message:")
         pprint(incoming_message)
         for entry in incoming_message['entry']:
-        #     pprint ("print entry: ")
-        #     pprint (entry)
-        #     #pprint(entry)
-              for message in entry['messaging']:
-        #         #print message
-
-        #         pprint("print message")
-                  pprint(message)
+            for message in entry['messaging']:
+                if 'message' in message:
+                    pprint("Text in Message")
+                    pprint(message)
         return HttpResponse()
  
