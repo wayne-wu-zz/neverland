@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import *
 
 
-PAGE_ACCESS_TOKEN = "EAAXffOTVZAtYBAGrTcncAZBsl96bNfOuz6h15LnHkZBnqvJmoiaha02e6mcwiIZBSFUfBpZCRm2oVZBvZCDK4onG42AFE2IarwPG9pe5uZB1chCZBFZAOqAkZBWv0kPj9vDxjmnfl4f5yW6uGRnt1wyWkJPEjIOw5eiKjH78vg2V8KtngZDZD"
+PAGE_ACCESS_TOKEN = "EAAXffOTVZAtYBAJo5ghtI5X10bIQgjQKZAgnvAjTgXFHbvisxsPwlQysdZChKvF7vu30MyxV3pccn37PuhPjE6WakRmvKsNeAAMZBycZBjYNeFPTOV9FQIkOko1uIZBn9EXQQMIF3M66MqA5XpWGeflawrx4bd06C0ZBfTZBhaG5EwZDZD"
 VERIFY_TOKEN = "tinkerbell"
 FACEBOOK_GRAPH = "https://graph.facebook.com/v2.6/me"
 
@@ -241,7 +241,7 @@ class NeverlandView(generic.View):
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
-                user = handler.get_user(UID)
+                send_message("UID: %s" % UID)
                 # if not handler.is_exists(UID):
                 #    handle_payload(UID, "GET_STARTED")
                 # #else:
@@ -257,7 +257,7 @@ class NeverlandView(generic.View):
                         if item != "null":
                             handler.update_user(UID, {item:text})
                             user = handler.get_user(UID)
-                            pprint( "Item: %s, text: %s" % ( item,text ) )
+                            pprint( "Item: %s, text: %s" % ( item, text ) )
                             if not handler.get_user(UID).flag:
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
@@ -273,9 +273,6 @@ class NeverlandView(generic.View):
                                 elif item == "preferred_age_below":
           
                                     handle_payload(UID,"USER_SET_GENDER")
-
-
-
 
                         if text == "settings":
                             setting_buttons(UID)
