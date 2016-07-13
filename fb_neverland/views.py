@@ -98,7 +98,7 @@ def initialize(UID):
     profile = get_profile(UID)
     handler.check_user(UID)
     handler.update_user(UID, {'first_name': profile['first_name'], 'last_name':profile['last_name']})
-    handler.update_user(UID, {'temp':'nick_name'})
+    #handler.update_user(UID, {'temp':'nick_name'})
     user = handler.get_user(UID)
     send_message(UID, "Welcome %s! What would you like to be called?" % user.first_name)
 
