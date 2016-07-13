@@ -259,6 +259,7 @@ class NeverlandView(generic.View):
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
                                     user = handler.get_user(UID)
+                                    send_message( UID, "Above: %s" % user.preferred_age_above )
                                     pprint("Above: %s" % user.preferred_age_above)
 
                                     #handler.update_user(UID, {'flag': True})
@@ -266,9 +267,11 @@ class NeverlandView(generic.View):
 
                                 elif item == "preferred_age_above":
                                     handle_payload(UID,"AGE_MAX")
-                                    
-                        #         elif item == "preferred_age_above":
-                        #             handle_payload(UID,"USER_SET_GENDER")
+                                    send_message( UID, "Below: %s" % user.preferred_age_below )
+
+                                elif item == "preferred_age_below":
+                                    handle_payload(UID,"USER_SET_GENDER")
+
                         if text == "settings":
                             setting_buttons(UID)
                         else:
