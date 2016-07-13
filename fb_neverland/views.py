@@ -10,6 +10,21 @@ from django.views.decorators.csrf import csrf_exempt
 PAGE_ACCESS_TOKEN = "EAAXffOTVZAtYBAGrTcncAZBsl96bNfOuz6h15LnHkZBnqvJmoiaha02e6mcwiIZBSFUfBpZCRm2oVZBvZCDK4onG42AFE2IarwPG9pe5uZB1chCZBFZAOqAkZBWv0kPj9vDxjmnfl4f5yW6uGRnt1wyWkJPEjIOw5eiKjH78vg2V8KtngZDZD"
 VERIFY_TOKEN = "tinkerbell"
 
+def greeting_message():
+    post_message_url = "https://graph.facebook.com/v2.6/me/thread_settings?access_token=%s" %(PAGE_ACCESS_TOKEN)
+    response_msg = json.dumps({
+        "setting_type":"call_to_actions",
+        "thread_state":"new_thread",
+        "call_to_actions":[
+        {
+            "payload":"Welcome"
+        }]
+    })
+    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
+    pprint(status.json())
+
+
+
 def post_facebook_message(fb_id, send_message):
     post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
     response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"text": send_message}})
@@ -19,6 +34,9 @@ def post_facebook_message(fb_id, send_message):
 
 # Create your views here.
 class NeverlandView(generic.View):
+
+    greeting_message()
+
     def get(self, request, *args, **kwargs):
         if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
             return HttpResponse(self.request.GET['hub.challenge'])
