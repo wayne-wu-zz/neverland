@@ -40,7 +40,8 @@ class NeverlandView(generic.View):
             for message in entry['messaging']:
                 if 'message' in message:
                     pprint("[LOG] Has message")
-                    pprint(message)
+                    pprint("deployed by Janet")
+                    pprint(message['message']['text'])
                     pprint("User ID: %s" % (message['sender']['id']))
                     post_facebook_message(message['sender']['id'], message['message']['text'])
         return HttpResponse()
