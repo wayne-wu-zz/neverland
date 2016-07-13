@@ -35,10 +35,34 @@ class NeverlandView(generic.View):
         pprint("print incoming_message:")
         pprint(incoming_message)
         for entry in incoming_message['entry']:
+            pprint("Sender ID: ")
+            pprint(entry['id'])
             for message in entry['messaging']:
                 if 'message' in message:
-                    pprint("Text in Message")
+                    pprint("[LOG] Has message")
                     pprint(message)
+                    pprint("User ID: %s", message['sender']['id'])
                     post_facebook_message(message['sender']['id'], message['message']['text'])
         return HttpResponse()
- 
+
+
+'''
+    def post(self, request, *args, **kwargs):
+        pprint("Message received")
+        incoming_message = json.loads(self.request.body.decode('utf-8'))
+        #pprint("print incoming_message:")
+        #pprint(incoming_message)
+        for entry in incoming_message['entry']:
+            #pprint ("print entry: ")
+            #pprint (entry)
+            #pprint(entry)
+            pprint("Sender ID: ")
+            pprint(entry['id'])
+            for message in entry['messaging']:
+                #print message
+                #if 'text' in message:
+                pprint("print text message")
+                pprint(message['message']['text'])
+        return HttpResponse()
+'''
+
