@@ -93,7 +93,11 @@ class Handler:
             return -1
 
     def get_user( self, uid ):
-        result = self.user.get( uid = uid )
+        try:
+            result = self.user.get( uid = uid )
+        except ObjectDoesNotExist:
+            return False
+
         return result
 
     def is_exists( self, uid ):
@@ -111,8 +115,6 @@ class Handler:
     def check_user( self, uid ):
         try:
             result = self.user.get( uid = uid )
-            result.delete()
-            self.create_user( uid )
         except ObjectDoesNotExist:
             self.create_user( uid ) 
             return { 'success': True, 'flag': False }
