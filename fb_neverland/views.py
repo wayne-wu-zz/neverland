@@ -278,7 +278,7 @@ class NeverlandView(generic.View):
                         if text == "settings":
                             setting_buttons(UID)
                         else:
-                            send_message(UID, text)
+                            send_message(UID, "2016Ya")
 
                     elif 'attachments' in msg:
                         if 'sticker_id' in msg:
