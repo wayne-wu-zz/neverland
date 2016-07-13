@@ -31,7 +31,7 @@ class NeverlandView(generic.View):
             pprint ("print entry: ")
             pprint (entry)
             #pprint(entry)
-            for 'message' in entry['messaging']:
+            for message in entry['messaging']:
                 #print message
                 #if 'text' in message:
                 pprint("print message")
