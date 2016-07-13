@@ -96,9 +96,9 @@ def get_profile(UID):
 
 def initialize(UID):
     profile = get_profile(UID)
-    handler.check_user(UID)
     send_message(UID, "Welcome %s! What would you like to be called?" % profile['first_name'])
     handler.update_user(UID, {'temp':'nick_name'})
+    handler.check_user(UID)
     #TODO: Create User db
 
 def submit_first_pic(UID):
