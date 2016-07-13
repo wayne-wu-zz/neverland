@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import *
 
 
-PAGE_ACCESS_TOKEN = "FAKE__EAAXffOTVZAtYBAJo5ghtI5X10bIQgjQKZAgnvAjTgXFHbvisxsPwlQysdZChKvF7vu30MyxV3pccn37PuhPjE6WakRmvKsNeAAMZBycZBjYNeFPTOV9FQIkOko1uIZBn9EXQQMIF3M66MqA5XpWGeflawrx4bd06C0ZBfTZBhaG5EwZDZD"
+PAGE_ACCESS_TOKEN = "EAAXffOTVZAtYBAJo5ghtI5X10bIQgjQKZAgnvAjTgXFHbvisxsPwlQysdZChKvF7vu30MyxV3pccn37PuhPjE6WakRmvKsNeAAMZBycZBjYNeFPTOV9FQIkOko1uIZBn9EXQQMIF3M66MqA5XpWGeflawrx4bd06C0ZBfTZBhaG5EwZDZD"
 VERIFY_TOKEN = "tinkerbell"
 FACEBOOK_GRAPH = "https://graph.facebook.com/v2.6/me"
 
