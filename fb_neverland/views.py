@@ -56,33 +56,33 @@ def send_image(fb_id, image_url):
     )
     call_send_api(message_data)
 
-def send_buttons(fb_id, img):
-    post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
-    response_msg = json.dumps(
-        {"recipient": {"id": fb_id},
-         "message":{ "attachment":{"type":"template","payload":{"template_type":"generic",
-         "elements":[{
-            "title":"Title",
-            "image_url":img,
-            "subtitle":"Subtitle",
-            "buttons":[
-              {
-                "type":"postback",
-                "title":"Yes",
-                "payload":"USER_DEFINED_PAYLOAD"
-              },
-              {
-                "type":"postback",
-                "title":"No",
-                "payload":"USER_DEFINED_PAYLOAD"
-              },
-              {
-                "type":"postback",
-                "title":"Give me more!"
-                "payload":"USER_DEFINED_PAYLOAD"
-              }]}]}}}})
-    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
-    pprint(status.json())
+# def send_buttons(fb_id, img):
+#     post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
+#     response_msg = json.dumps(
+#         {"recipient": {"id": fb_id},
+#          "message":{ "attachment":{"type":"template","payload":{"template_type":"generic",
+#          "elements":[{
+#             "title":"Title",
+#             "image_url":img,
+#             "subtitle":"Subtitle",
+#             "buttons":[
+#               {
+#                 "type":"postback",
+#                 "title":"Yes",
+#                 "payload":"USER_DEFINED_PAYLOAD"
+#               },
+#               {
+#                 "type":"postback",
+#                 "title":"No",
+#                 "payload":"USER_DEFINED_PAYLOAD"
+#               },
+#               {
+#                 "type":"postback",
+#                 "title":"Give me more!"
+#                 "payload":"USER_DEFINED_PAYLOAD"
+#               }]}]}}}})
+#     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
+#     pprint(status.json())
 
 # Create your views here.
 class NeverlandView(generic.View):
@@ -116,10 +116,10 @@ class NeverlandView(generic.View):
                         send_message(UID, msg)
                     if 'message' in message and 'attachments' in message['message']:
                         for attachment in message['message']['attachments']:
-                            if attachment['payload']['type'] == 'image':
+                            if attachment['type'] == 'image':
                                 img = attachment['payload']['url']
                                 pprint("IMAGE: %s" % img)
-                                send_buttons(UID, http://petersapparel.parseapp.com/img/item100-thumb.png)
+                                send_image(UID, img)
             else:
                 #pprint(user.check(UID)['message'])
                 send_message(message['sender']['id'], "Need Setting")
