@@ -23,6 +23,7 @@ class User( models.Model ):
     current_relation_id = models.IntegerField(u'current_relation_id',default=-1)
     temp = models.CharField( u'temp', max_length= 100, default="null" )
     state = models.CharField( u'state', max_length = 100, default="" )
+    profile_pic = models.CharField( u'profile_pic' , max_length=100, default="" )
 
 class Relation( models.Model ):
     uid1 = models.CharField(u'uid1', max_length=100, default = "")
