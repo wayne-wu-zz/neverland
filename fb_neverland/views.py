@@ -23,11 +23,18 @@ class NeverlandView(generic.View):
         return generic.View.dispatch(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        pprint("Message received")
         incoming_message = json.loads(self.request.body.decode('utf-8'))
-        for entry in incoming_message['entry']:
-            pprint(entry)
-            # for message in entry['entry']:
-            #     if 'message' in message:
-            #         pprint(message)
+        pprint("print incoming_message:")
+        pprint(incoming_message)
+	    for entry in incoming_message['entry']:
+	        pprint ("print entry: ")
+            pprint (entry)
+            #pprint(entry)
+            for 'message' in entry['messaging']:
+		        #print message
+                #if 'text' in message:
+                pprint("print message")
+                pprint(message)
         return HttpResponse()
-
+ 
