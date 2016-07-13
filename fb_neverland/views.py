@@ -69,7 +69,7 @@ def send_buttons(fb_id, img):
               {
                 "type":"postback",
                 "title":"Yes",
-                "payload":"USER_DEFINED_PAYLOAD"
+                "payload": "YES!"
               },
               {
                 "type":"postback",
@@ -83,6 +83,8 @@ def send_buttons(fb_id, img):
               }]}]}}}})
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
     pprint(status.json())
+
+
 
 # Create your views here.
 class NeverlandView(generic.View):
