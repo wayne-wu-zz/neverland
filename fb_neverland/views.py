@@ -205,7 +205,7 @@ def handle_payload(UID, payload):
     elif payload == "GENDER_FEMALE":
         handler.update_user(UID,{'preferred_gender':0, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to female.")
-        if not handler.get_user(UID).flag
+        if not handler.get_user(UID).flag:
             send_message(UID,"Please upload your first picture.")
     elif payload == "GENDER_MALE":
         handler.update_user(UID,{'preferred_gender':1, 'temp':'profile_pic'})
