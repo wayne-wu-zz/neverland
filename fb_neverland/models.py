@@ -106,6 +106,7 @@ class Handler:
     def create_user( self, uid ):
         user = User( uid = uid )
         user.save()
+        self.user = User.objects
         return { 'success': True }
 
     def check_user( self, uid ):
