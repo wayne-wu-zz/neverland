@@ -93,12 +93,12 @@ class Handler:
             return -1
 
     def get_user( self, uid ):
-        try:
-            result = self.user.get( uid = uid )
-        except ObjectDoesNotExist:
-            user = User( uid = uid )
-            user.save()
-            return user
+        #try:
+        result = self.user.get( uid = uid )
+        #except ObjectDoesNotExist:
+        #    user = User( uid = uid )
+        #    user.save()
+        #    return user
 
         return result
 

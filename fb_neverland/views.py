@@ -99,7 +99,7 @@ def initialize(UID):
     result = handler.check_user(UID)
     pprint( result )
     handler.update_user(UID, {'first_name': profile['first_name'], 'last_name':profile['last_name']})
-    #handler.update_user(UID, {'temp':'nick_name'})
+    handler.update_user(UID, {'temp':'nick_name'})
     user = handler.get_user(UID)
     send_message(UID, "Welcome %s! What would you like to be called?" % user.first_name)
 
@@ -253,7 +253,7 @@ class NeverlandView(generic.View):
                     if 'text' in msg:
                         text = msg['text']
                         item = handler.get_user(UID).temp
-                        send_message(UID, "temp: %s" % item)
+                        #send_message(UID, "temp: %s" % item)
                        
                         if item != "null":
                             handler.update_user(UID, {item:text})
@@ -278,7 +278,7 @@ class NeverlandView(generic.View):
                         if text == "settings":
                             setting_buttons(UID)
                         else:
-                            send_message(UID, "2016Ya")
+                            send_message(UID, text)
 
                     elif 'attachments' in msg:
                         if 'sticker_id' in msg:
