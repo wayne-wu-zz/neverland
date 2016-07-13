@@ -85,15 +85,16 @@ def get_profile(UID):
     user_url = "https://graph.facebook.com/v2.6/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s" %(UID, PAGE_ACCESS_TOKEN)
     response = requests.get(user_url)
     if response.status_code == 200:
-        return response.json
+        return response.json()
     else:
         pprint("ERROR getting profile")
         return None
 
 def initialize(UID):
     profile = get_profile(UID)
-    pprint(profile)
-    send_message(UID, "Welcome!")
+    item = profile[0]
+    send_message(UID, "Welcome %s!" % item)
+    #send_message(UID, profile)
 
 def handle_payload(UID, payload):
     pprint("Handling payload..")
