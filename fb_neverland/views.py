@@ -78,7 +78,7 @@ def send_buttons(fb_id, img):
               },
               {
                 "type":"postback",
-                "title":"Give me more!"
+                "title":"Give me more!",
                 "payload":"USER_DEFINED_PAYLOAD"
               }]}]}}}})
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
@@ -121,7 +121,7 @@ class NeverlandView(generic.View):
                             if attachment['payload']['type'] == 'image':
                                 img = attachment['payload']['url']
                                 pprint("IMAGE: %s" % img)
-                                send_buttons(UID, http://petersapparel.parseapp.com/img/item100-thumb.png)
+                                send_buttons(UID, "http://petersapparel.parseapp.com/img/item100-thumb.png")
             else:
                 #pprint(user.check(UID)['message'])
                 send_message(message['sender']['id'], "Need Setting")
