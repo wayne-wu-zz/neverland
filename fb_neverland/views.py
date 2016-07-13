@@ -96,10 +96,11 @@ def get_profile(UID):
 
 def initialize(UID):
     profile = get_profile(UID)
-    send_message(UID, "Welcome %s! What would you like to be called?" % profile['first_name'])
     handler.check_user(UID)
+    handler.update_user(UID, {'first_name': profile['first_name'], 'last_name':profile['last_name']})
     handler.update_user(UID, {'temp':'nick_name'})
-
+    user = handler.get_user(UID)
+    send_message(UID, "Welcome %s! What would you like to be called?" % user.first_name)
 
 def submit_first_pic(UID):
     #submit the first picture to start
@@ -248,17 +249,18 @@ class NeverlandView(generic.View):
                     msg = message['message']
                     if 'text' in msg:
                         text = msg['text']
-                        item = handler.get_user(UID).temp
-                        if item != "null":
-                            handler.update_user(UID, {item:text})
-                            if not handler.get_user(UID).flag :
-                                if item == "nick_name":
-                                    handle_payload(UID,"AGE_MIN")
-                                elif item == "preferred_age_below":
-                                    handle_payload(UID,"AGE_MAX")
-                                elif item == "preferred_age_above":
-                                    handle_payload(UID,"USER_SET_GENDER")
-                        elif text == "settings":
+
+                        # item = handler.get_user(UID).temp
+                        # if item != "null":
+                        #     handler.update_user(UID, {item:text})
+                        #     if not handler.get_user(UID).flag :
+                        #         if item == "nick_name":
+                        #             handle_payload(UID,"AGE_MIN")
+                        #         elif item == "preferred_age_below":
+                        #             handle_payload(UID,"AGE_MAX")
+                        #         elif item == "preferred_age_above":
+                        #             handle_payload(UID,"USER_SET_GENDER")
+                        if text == "settings":
                             setting_buttons(UID)
                         else:
                             send_message(UID, text)
