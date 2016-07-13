@@ -39,7 +39,6 @@ def send_message(fb_id, message):
         })
     call_send_api(message_data)
 
-
 def send_image(fb_id, image_url):
     message_data = json.dumps(
         {"recipient":
@@ -134,7 +133,10 @@ class NeverlandView(generic.View):
                 UID = message['sender']['id']
                 if 'message' in message and 'text' in message['message']:
                     msg = message['message']['text']
-                    send_message(UID, msg)
+                    if msg == "settings":
+                        pass #TODO: call settings menu
+                    else:
+                        send_message(UID, msg)
                 if 'message' in message and 'attachments' in message['message']:
                     pprint(message)
                     if 'sticker_id' in message['message']:
