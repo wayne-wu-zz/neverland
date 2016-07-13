@@ -26,17 +26,35 @@ def get_started():
     pprint(status.json())
 
 
-def send_message(fb_id, message):
+def call_send_api(message_data):
     post_message_url = "%s/messages?access_token=%s" % (FACEBOOK_GRAPH, PAGE_ACCESS_TOKEN)
-    response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"text": message}})
-    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
+    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=message_data)
     pprint(status.json())
 
-def send_image(fb_id, image):
-    post_message_url = "%s/messages?access_token=%s" % (FACEBOOK_GRAPH, PAGE_ACCESS_TOKEN)
-    response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"attachment":{"type":"image","payload":{"url":image}}}})
-    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
-    pprint(status.json())
+def send_message(fb_id, message):
+    message_data = json.dumps(
+        {"recipient":
+             {"id": fb_id},
+         "message":
+             {"text": message}
+        })
+    call_send_api(message_data)
+
+
+def send_image(fb_id, image_url):
+    message_data = json.dumps(
+        {"recipient":
+             {"id": fb_id},
+         "message":
+             {"attachment":
+                  {"type":"image",
+                   "payload":
+                       {"url":image_url}
+                   }
+              }
+         }
+    )
+    call_send_api(message_data)
 
 # Create your views here.
 class NeverlandView(generic.View):
