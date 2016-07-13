@@ -203,13 +203,15 @@ def handle_payload(UID, payload):
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
     elif payload == "GENDER_FEMALE":
-        handler.update_user(UID,{'preferred_gender':0, 'temp':'image'})
+        handler.update_user(UID,{'preferred_gender':0, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to female.")
+        if not handler.get_user(UID).flag
+            send_message(UID,"Please upload your first picture.")
     elif payload == "GENDER_MALE":
-        handler.update_user(UID,{'preferred_gender':1, 'temp':'image'})
+        handler.update_user(UID,{'preferred_gender':1, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to male.")
     elif payload == "GENDER_BOTH":
-        handler.update_user(UID,{'preferred_gender':2, 'temp':'image'})
+        handler.update_user(UID,{'preferred_gender':2, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to both.")
 
 
@@ -265,12 +267,15 @@ class NeverlandView(generic.View):
                                     #handler.update_user(UID, {'flag': True})
                                 elif item == "preferred_age_above":
                                     
-                                    send_message( UID, "Above: %s" % user.preferred_age_above )
+            
                                     handle_payload(UID,"AGE_MAX")
 
                                 elif item == "preferred_age_below":
-                                    send_message( UID, "Below: %s" % user.preferred_age_below )
+          
                                     handle_payload(UID,"USER_SET_GENDER")
+
+
+
 
                         if text == "settings":
                             setting_buttons(UID)
@@ -285,6 +290,10 @@ class NeverlandView(generic.View):
                                 if attachment['type'] == 'image':
                                     img = attachment['payload']['url']
                                     pprint("IMAGE: %s" % img)
+                                    item = handler.get_user(UID).temp
+                                    if item == "profile_pic"
+                                        handler.update_user(UID,{item:img,"flag":True})
+                                        send_message(UID,"Done setting.")
                                     send_choice(UID, img)
         return HttpResponse()
 
