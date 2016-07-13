@@ -250,9 +250,10 @@ class NeverlandView(generic.View):
                     if 'text' in msg:
                         text = msg['text']
                         item = handler.get_user(UID).temp
+                        send_message(UID, "temp: %s" % item)
+
                         if item != "null":
                             handler.update_user(UID, {item:text})
-
                             if not handler.get_user(UID).flag:
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
