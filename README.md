@@ -36,6 +36,8 @@ You can replace ``helloworld`` with your desired project name.
 
 See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
 
+##Developers
+
 ## Further Reading
 
 - [Gunicorn](https://warehouse.python.org/project/gunicorn/)
