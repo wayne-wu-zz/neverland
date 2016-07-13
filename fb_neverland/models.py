@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
-
-
-
-# Create your models here.
 class User( models.Model ):
+
+    GENDER_ALL = 0
+    GENDER_MALE = 1
+    GENDER_FEMAILE = 2
 
     uid = models.CharField(u'uid', max_length = 100, default="")
     first_name = models.CharField(u'first_name', max_length = 100, default="")
@@ -14,22 +14,18 @@ class User( models.Model ):
     nick_name = models.CharField(u'nick_name', max_length = 100, default="")
     age = models.IntegerField(u'first_name', default=20)
     location = models.CharField(u'location', max_length = 100, default="taiwan")
-    gender = models.IntegerField(u'gender', default=0)
+    gender = models.IntegerField(u'gender', default=GENDER_ALL)
     relation_id = models.IntegerField(u'relation_id', default=-1)
     preferred_age_above = models.IntegerField(u'preferred_age_above' , default = 15)
     preferred_age_below = models.IntegerField(u'preferred_age_below' , default = 25)
-    preferred_gender = models.IntegerField(u'preferred_gender', default=0)  
+    preferred_gender = models.IntegerField(u'preferred_gender', default=GENDER_ALL)  
     flag = models.BooleanField(u'flag', default=False)
     current_relation_id = models.IntegerField(u'current_relation_id',default=-1)
-
-class Profile_Pic( models.Model ):
-    uid = models.CharField( u'uid', max_length = 100 )
-    url = models.CharField( u'url', max_length = 100 )
-
+    temp = models.CharField( u'temp', max_length= 100, default="null" )
+    state = models.CharField( u'state', max_length = 100, default="" )
+    profile_pic = models.CharField( u'profile_pic' , max_length=100, default="" )
 
 class Relation( models.Model ):
-
-    #rid = models.AutoField(u'rid', primary_key=True)
     uid1 = models.CharField(u'uid1', max_length=100, default = "")
     uid2 = models.CharField(u'uid2', max_length=100, default = "")
     msg12 = models.CharField( u'msg12', max_length = 100, default = "" )
@@ -38,45 +34,32 @@ class Relation( models.Model ):
     img21 = models.CharField( u'img21', max_length = 200, default = "" )    
     status1 = models.IntegerField( u'status1' , default = 0 )
     status2 = models.IntegerField( u'status2' , default = 0)
-    #STATUS_NONE = 0
-    #STATUS_YES  = 1
-    #STATUS_NO   = 2
-    #STATUS_GMM  = 3
-
-
 
 class Handler:
     def __init__ ( self ):
         self.relation = Relation.objects
         self.user = User.objects
-        self.profile_pic = Profile_Pic.objects
 
-    def update_relation( self, relation ):
-        rid = relation['rid']
+    def update_relation( self, rid, relation ):
         try:
-            result = self.relation.get( rid = rid )
+            result = self.relation.get( id = rid )
         except ObjectDoesNotExist:
-            return { 'success': False, 'msg': 'rid not exists' }
+            return { 'success': False, 'msg': 'id not exists' }
 
         for k, v in relation.iteritems():
-            if k not in result:
-                return { 'success': False, 'msg': 'Contain invalid key ' + k }
-            result[k] = v
+            setattr( result, k , v )
 
-        ret = result.save()
-        if ret == 1:
-            return { 'success': True }
-        else:
-            return { 'success': False, 'msg': 'update operation failed' }   
+        result.save()
+        return { 'success': True }
 
 
     def get_relation( self , rid ):
-        result = self.relation.get( rid = rid )
-        if result is None:
-            return { 'success': False, 'msg': 'rid not exists' }
-        ret = { 'success': True }
-        ret['payload'] = result
-        return ret
+        try:
+            result = self.relation.get( id = rid )
+        except ObjectDoesNotExist:
+            return { 'success': False, 'msg': 'relation not exists' }
+        
+        return result
 
     def create_relation( self, uid1, uid2 ):
         relation = Relation( uid1 = uid1, uid2 = uid2 )
@@ -84,22 +67,41 @@ class Handler:
         return relation.id
 
     def has_relation( self, uid1, uid2 ):
+        if uid1 == uid2:
+            return -1
         if len( self.relation.all() ) == 0:
             return 0
+        try:
+            tmp = self.relation.filter( uid1 = uid1 ).filter( uid2 = uid2 )
+        except ObjectDoesNotExist:
+            tmp = []
 
-        tmp = self.relation.filter( uid1 = uid1 ).filter( uid2 = uid2 )
-        tmp2 = self.relation.filter( uid2 = uid1 ).filter( uid1 = uid2 )
+        try:
+            tmp2 = self.relation.filter( uid2 = uid1 ).filter( uid1 = uid2 )
+        except ObjectDoesNotExist:
+            tmp2 = []
 
-        if tmp and tmp[0]['status1'] is None:
-            return tmp[0]['id']
+        if len(tmp) > 0 and tmp[0].status1 == 0:
+            return tmp[0].id
 
-        if tmp2 and tmp2[0]['status2'] is None:
-            return tmp2[0]['id']
+        if len(tmp2) > 0 and tmp2[0].status2 == 0:
+            return tmp2[0].id
 
-        if tmp is None and tmp2 is None:
+        if len(tmp) == 0 and len(tmp2) == 0:
             return 0
         else:
             return -1
+
+    def get_user( self, uid ):
+        result = self.user.get( uid = uid )
+        return result
+
+    def is_exists( self, uid ):
+        try:
+            result = self.user.get( uid = uid )
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     def create_user( self, uid ):
         user = User( uid = uid )
@@ -107,35 +109,38 @@ class Handler:
         return { 'success': True }
 
     def check_user( self, uid ):
-        result = self.user.get( uid = uid )
-        if result is None:
-            create_user( uid )
+        try:
+            result = self.user.get( uid = uid )
+        except ObjectDoesNotExist:
+            self.create_user( uid ) 
             return { 'success': True, 'flag': False }
 
         return { 'success': True, 'flag': result.flag }
 
     def get_user_current_rid( self, uid ):
-        result = self.user.get( uid = uid )
-        if result is None:
+        try:
+            result = self.user.get( uid = uid )
+        except ObjectDoesNotExist:
             return { 'success': False, 'msg': 'User not exists' }
-        return { 'success': True, 'rid': result[current_relation_id] }
+
+        return { 'success': True, 'rid': result.current_relation_id }
     
     def update_user( self, uid , info ):
-        result = self.user.get( uid = uid )
-        if result is None:
+        try:
+            result = self.user.get( uid = uid )
+        except ObjectDoesNotExist:
             return { 'success': False, 'msg': 'User not exists' }
 
         for k, v in info.iteritems():
-            #if k not in result:
-            #   return { 'success': False, 'msg': 'Contain invalid field' + k }
             setattr( result, k, v )
 
         result.save()   
         return { 'success': True }
 
     def delete_user( self, uid ):
-        result = self.user.get( uid = uid )
-        if result is None:
+        try:
+            result = self.user.get( uid = uid )
+        except ObjectDoesNotExist:
             return { 'success': False, 'msg': 'User not exists' }
 
         result.delete()
@@ -145,22 +150,27 @@ class Handler:
         return self.user.order_by('?').first()
 
 
-
     def get_next_relation( self, uid ):
-        nuid = get_random_user()['uid']
+        nuid = self.get_random_user().uid
         round = 0
-        while round < 5 and has_relation( uid, nuid ) == -1:
-            nuid = get_random_user()['uid']
+        while round < 5 and self.has_relation( uid, nuid ) == -1:
+            nuid = self.get_random_user().uid
             round += 1
 
         if round >= 5:
             return { 'success': False, 'msg': 'No more match can be found' }
 
-        rel = has_relation( uid, nuid )
+        rel = self.has_relation( uid, nuid )
         if rel is 0:
-            rel = create_relation( uid, nuid )
+            rel = self.create_relation( uid, nuid )
 
-        self.user[ uid ].current_relation_id = rel
+        try:
+            result = self.user.get( uid = uid )
+        except ObjectDoesNotExist:
+            return { 'success': False, 'msg': 'User not exists' }
+
+        setattr( result, 'current_relation_id' , rel )
+        result.save()
+        
         return rel
-
 
