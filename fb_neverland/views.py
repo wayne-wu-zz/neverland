@@ -54,14 +54,14 @@ def send_image(fb_id, image_url):
     )
     call_send_api(message_data)
 
-def send_buttons(fb_id, img):
+def send_choice(fb_id, img):
     message_data = json.dumps(
         {"recipient": {"id": fb_id},
          "message":{ "attachment":{"type":"template","payload":{"template_type":"generic",
          "elements":[{
-            "title":"Title",
+            "title":"Name",
             "image_url":img,
-            "subtitle":"Subtitle",
+            "subtitle":"description",
             "buttons":[
               {
                 "type":"postback",
@@ -94,6 +94,10 @@ def initialize(UID):
     send_message(UID, "Welcome %s!" % profile['first_name'])
     #TODO: Create User db
 
+def submit_first_pic(UID):
+    #submit the first picture to start
+    pass
+
 def handle_payload(UID, payload):
     pprint("Handling payload..")
     if payload == "USER_PRESSED_YES":
@@ -104,6 +108,8 @@ def handle_payload(UID, payload):
         send_message(UID, "Give me more!"),
     elif payload == "GET_STARTED":
         initialize(UID)
+        #TODO: Call settings
+
 
 
 # Create your views here.
@@ -131,27 +137,29 @@ class NeverlandView(generic.View):
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
-                if 'message' in message and 'text' in message['message']:
-                    msg = message['message']['text']
-                    if msg == "settings":
-                        pass #TODO: call settings menu
-                    else:
-                        send_message(UID, msg)
-                if 'message' in message and 'attachments' in message['message']:
-                    pprint(message)
-                    if 'sticker_id' in message['message']:
-                        pprint("Receive a sticker")
-                        send_message(UID, "Oh, a sticker!")
-                    else:
-                        pprint("Receive an image")
-                        for attachment in message['message']['attachments']:
-                            if attachment['type'] == 'image':
-                                img = attachment['payload']['url']
-                                pprint("IMAGE: %s" % img)
-                                send_buttons(UID, img)
+                #handler = Handler()
+                #if not handler.User.exist():
+                #   handler_payload(UID, "GET_STARTED")
+                #else:
                 if 'postback' in message:
                     handle_payload(UID, message['postback']['payload'])
-
+                if 'message' in message:
+                    msg = message['message']
+                    if 'text' in msg:
+                        text = msg['text']
+                        if text == "settings":
+                            pass
+                        else:
+                            send_message(UID, text)
+                    elif 'attachments' in msg:
+                        if 'sticker_id' in msg:
+                            send_message(UID, "Oh, a sticker!")
+                        else:
+                            for attachment in message['message']['attachments']:
+                                if attachment['type'] == 'image':
+                                    img = attachment['payload']['url']
+                                    pprint("IMAGE: %s" % img)
+                                    send_choice(UID, img)
         return HttpResponse()
 
 
