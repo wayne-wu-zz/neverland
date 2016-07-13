@@ -189,7 +189,6 @@ def handle_payload(UID, payload):
         send_message(UID, "You said give me more!")
     elif payload == "GET_STARTED":
         initialize(UID)
-        setting_buttons(UID)
     elif payload == "USER_SET_NAME":
         send_message(UID,"What would you like to be called?")
         handler.update_user(UID,{'temp':'nick_name'})
