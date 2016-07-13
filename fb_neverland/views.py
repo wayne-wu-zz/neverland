@@ -241,7 +241,7 @@ class NeverlandView(generic.View):
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
-                send_message("UID: %s" % UID)
+                send_message(UID, "UID: %s" % UID)
                 # if not handler.is_exists(UID):
                 #    handle_payload(UID, "GET_STARTED")
                 # #else:
