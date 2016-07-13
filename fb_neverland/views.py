@@ -57,9 +57,8 @@ class NeverlandView(generic.View):
             pprint("Sender ID: ")
             pprint(entry['id'])
             for message in entry['messaging']:
-                if 'message' in message:
+                if 'message' in message and 'text' in message:
                     pprint("[LOG] Has message")
-                    pprint("deployed by Janet")
                     pprint(message['message']['text'])
                     pprint("User ID: %s" % (message['sender']['id']))
                     send_message(message['sender']['id'], message['message']['text'])
