@@ -115,7 +115,9 @@ class NeverlandView(generic.View):
                         msg = message['message']['text']
                         send_message(UID, msg)
                     if 'message' in message and 'attachments' in message['message']:
+                        pprint("Receive an image")
                         for attachment in message['message']['attachments']:
+                            pprint(attachment)
                             if attachment['payload']['type'] == 'image':
                                 img = attachment['payload']['url']
                                 pprint("IMAGE: %s" % img)
