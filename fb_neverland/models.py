@@ -66,6 +66,8 @@ class Handler:
         return relation.id
 
     def has_relation( self, uid1, uid2 ):
+        if uid1 == uid2:
+            return -1
         if len( self.relation.all() ) == 0:
             return 0
         try:
@@ -152,8 +154,6 @@ class Handler:
         round = 0
         while round < 5 and self.has_relation( uid, nuid ) == -1:
             nuid = self.get_random_user().uid
-            if nuid == uid:
-                continue
             round += 1
 
         if round >= 5:
