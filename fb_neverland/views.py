@@ -239,9 +239,9 @@ class NeverlandView(generic.View):
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
-                #handler = Handler()
-                #if not handler.User.exist():
-                #   handler_payload(UID, "GET_STARTED")
+                user = handler.get_user(UID)
+                if not handler.is_exists(UID):
+                   handle_payload(UID, "GET_STARTED")
                 #else:
                 if 'postback' in message:
                     handle_payload(UID, message['postback']['payload'])
