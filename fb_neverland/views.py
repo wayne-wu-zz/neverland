@@ -203,13 +203,13 @@ def handle_payload(UID, payload):
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
     elif payload == "GENDER_FEMALE":
-        handler.update_user(UID,{'preferred_gender':0, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':0, 'temp':'image'})
         send_message(UID,"Preferred gender set to female.")
     elif payload == "GENDER_MALE":
-        handler.update_user(UID,{'preferred_gender':1, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':1, 'temp':'image'})
         send_message(UID,"Preferred gender set to male.")
     elif payload == "GENDER_BOTH":
-        handler.update_user(UID,{'preferred_gender':2, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':2, 'temp':'image'})
         send_message(UID,"Preferred gender set to both.")
 
 
