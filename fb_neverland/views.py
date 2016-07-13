@@ -126,6 +126,7 @@ class NeverlandView(generic.View):
                     pprint(message)
                     if 'sticker_id' in message['message']:
                         pprint("Receive a sticker")
+                        send_message(UID, "Oh, a sticker!")
                     else:
                         pprint("Receive an image")
                         for attachment in message['message']['attachments']:
