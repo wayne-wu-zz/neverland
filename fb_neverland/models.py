@@ -96,7 +96,9 @@ class Handler:
         try:
             result = self.user.get( uid = uid )
         except ObjectDoesNotExist:
-            return False
+            user = User( uid = uid )
+            user.save()
+            return user
 
         return result
 
