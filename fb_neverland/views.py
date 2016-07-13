@@ -249,10 +249,12 @@ class NeverlandView(generic.View):
                     if 'text' in msg:
                         text = msg['text']
                         item = handler.get_user(UID).temp
-                        if item == "image":
-                            send_message(UID,"Please send your first picture")
-                        elif item != "null":
-                            handler.update_user(UID, {item:text})
+                        #if item == "image":
+                        #    send_message(UID,"Please send your first picture")
+                        #elif item != "null":
+                        if item != "null":
+                            if item != "image":
+                                handler.update_user(UID, {item:text})
                             if not handler.get_user(UID).flag :
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
@@ -260,7 +262,8 @@ class NeverlandView(generic.View):
                                     handle_payload(UID,"AGE_MAX")
                                 elif item == "preferred_age_below":
                                     handle_payload(UID,"USER_SET_GENDER")
-
+                                elif item == "image":
+                                    send_message(UID,"Please send your first picture")
                         elif text == "settings":
                             setting_buttons(UID)
                         else:
