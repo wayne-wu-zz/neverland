@@ -249,10 +249,12 @@ class NeverlandView(generic.View):
                     msg = message['message']
                     if 'text' in msg:
                         text = msg['text']
-
-                        # item = handler.get_user(UID).temp
-                        # if item != "null":
-                        #     handler.update_user(UID, {item:text})
+                        item = handler.get_user(UID).temp
+                        if item != "null":
+                            handler.update_user(UID, {item:text})
+                            user = handler.get_user(UID)
+                            send_message(UID, "Hi, %s" %(user.nick_name))
+                            handler.update_user(UID, {"temp":"null"})
                         #     if not handler.get_user(UID).flag :
                         #         if item == "nick_name":
                         #             handle_payload(UID,"AGE_MIN")
@@ -265,10 +267,6 @@ class NeverlandView(generic.View):
                         else:
                             send_message(UID, text)
 
-                            if text == "settings":
-                                pass
-                            else:
-                                send_message(UID, text)
                     elif 'attachments' in msg:
                         if 'sticker_id' in msg:
                             send_message(UID, "Oh, a sticker!")
