@@ -84,12 +84,15 @@ def send_buttons(fb_id, img):
 
 def handle_payload(UID, payload):
     pprint("Handling payload..")
-    return {
-        "USER_PRESSED_YES" : send_message(UID, "You said yes!"),
-        "USER_PRESSED_NO" : send_message(UID, "You said no!" ),
-        "USER_PRESSED_GIVE_ME_MORE" : send_message(UID, "Give me more!"),
-        "GET_STARTED" : send_message(UID, "Welcome!")
-    }.get(payload)
+    if payload == "USER_PRESSED_YES":
+        send_message(UID, "You said yes!")
+    elif payload == "USER_PRESSED_NO":
+        send_message(UID, "You said no!" )
+    elif payload == "USER_PRESSED_GIVE_ME_MORE":
+        send_message(UID, "Give me more!"),
+    elif payload == "GET_STARTED":
+        send_message(UID, "Welcome!")
+
 
 # Create your views here.
 class NeverlandView(generic.View):
