@@ -61,13 +61,14 @@ class NeverlandView(generic.View):
         for entry in incoming_message['entry']:
             pprint("Sender ID: ")
             pprint(entry['id'])
-            string UID = entry['id']
+            string UID
             string msg
             string img
             string RID
             if TRUE #user.check(UID)['success']:
                 string RID = user.current_RID(UID)
                 for message in entry['messaging']:
+                    UID = message['sender']['id']
                     if 'message' in message:
                         msg = message['message']['text']
                         post_facebook_message(UID,msg)
