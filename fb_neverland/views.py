@@ -251,7 +251,7 @@ class NeverlandView(generic.View):
                         item = handler.get_user(UID).temp
                         if item != "null":
                             handler.update_user(UID, {item:text})
-                            if not handler.user.get_user(UID).flag :
+                            if not handler.get_user(UID).flag :
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
                                 elif item == "preferred_age_below":
