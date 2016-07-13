@@ -11,7 +11,7 @@ PAGE_ACCESS_TOKEN = "EAAXffOTVZAtYBAGrTcncAZBsl96bNfOuz6h15LnHkZBnqvJmoiaha02e6m
 VERIFY_TOKEN = "tinkerbell"
 
 def post_facebook_message(fb_id, send_message):
-    post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s", PAGE_ACCESS_TOKEN
+    post_message_url = "https://graph.facebook.com/v2.6/me/messages?access_token=%s" % (PAGE_ACCESS_TOKEN)
     response_msg = json.dumps({"recipient": {"id": fb_id}, "message": {"text": send_message}})
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
     pprint(status.json())
@@ -41,7 +41,7 @@ class NeverlandView(generic.View):
                 if 'message' in message:
                     pprint("[LOG] Has message")
                     pprint(message)
-                    pprint("User ID: %s", message['sender']['id'])
+                    pprint("User ID: %s" % (message['sender']['id']))
                     post_facebook_message(message['sender']['id'], message['message']['text'])
         return HttpResponse()
 
