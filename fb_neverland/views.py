@@ -291,7 +291,7 @@ class NeverlandView(generic.View):
                                     img = attachment['payload']['url']
                                     pprint("IMAGE: %s" % img)
                                     item = handler.get_user(UID).temp
-                                    if item == "profile_pic"
+                                    if item == "profile_pic":  s
                                         handler.update_user(UID,{item:img,"flag":True})
                                         send_message(UID,"Done setting.")
                                     send_choice(UID, img)
