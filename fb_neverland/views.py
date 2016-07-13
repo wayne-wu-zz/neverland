@@ -253,8 +253,8 @@ class NeverlandView(generic.View):
                         #    send_message(UID,"Please send your first picture")
                         #elif item != "null":
                         if item != "null":
-                            if item != "image":
-                                handler.update_user(UID, {item:text})
+                            #if item != "image":
+                            handler.update_user(UID, {item:text})
                             if not handler.get_user(UID).flag :
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
