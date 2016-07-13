@@ -190,25 +190,25 @@ def handle_payload(UID, payload):
         setting_buttons(UID)
     elif payload == "USER_SET_NAME":
         send_message(UID,"What would you like to be called?")
-        handler.user.update_user(UID,{'temp':'nick_name'})
+        handler.update_user(UID,{'temp':'nick_name'})
     elif payload == "USER_SET_AGE":
         setting_age(UID)
     elif payload == "AGE_MIN":
         send_message(UID,"Please enter a number for the minimum age.")
-        handler.user.update_user(UID,{'temp':'preferred_age_above'})
+        handler.update_user(UID,{'temp':'preferred_age_above'})
     elif payload == "AGE_MAX":
         send_message(UID,"Please enter a number for the maximum age.")
-        handler.user.update_user(UID,{'temp':'preferred_age_below'})       
+        handler.update_user(UID,{'temp':'preferred_age_below'})       
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
     elif payload == "GENDER_FEMALE":
-        handler.user.update_user(UID,{'preferred_gender':0, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':0, 'temp':'null'})
         send_message(UID,"Preferred gender set to female.")
     elif payload == "GENDER_MALE":
-        handler.user.update_user(UID,{'preferred_gender':1, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':1, 'temp':'null'})
         send_message(UID,"Preferred gender set to male.")
     elif payload == "GENDER_BOTH":
-        handler.user.update_user(UID,{'preferred_gender':2, 'temp':'null'})
+        handler.update_user(UID,{'preferred_gender':2, 'temp':'null'})
         send_message(UID,"Preferred gender set to both.")
 
 
@@ -248,7 +248,7 @@ class NeverlandView(generic.View):
                     msg = message['message']
                     if 'text' in msg:
                         text = msg['text']
-                        item = handler.user.get_user(UID).temp
+                        item = handler.get_user(UID).temp
                         if item != "null":
                             handler.update_user(UID, {item:text})
                             if not handler.user.get_user(UID).flag :
