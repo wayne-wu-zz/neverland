@@ -29,8 +29,6 @@ class Profile_Pic( models.Model ):
 
 class Relation( models.Model ):
 
-
-
 	#rid = models.AutoField(u'rid', primary_key=True)
 	uid1 = models.CharField(u'uid1', max_length=100, default = "")
 	uid2 = models.CharField(u'uid2', max_length=100, default = "")
@@ -162,6 +160,5 @@ class Handler:
 
 		self.user[ uid ].current_relation_id = rel
 		return rel
-
 
 
