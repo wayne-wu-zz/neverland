@@ -86,10 +86,12 @@ class NeverlandView(generic.View):
                     if 'message' in message and 'text' in message['message']:
                         msg = message['message']['text']
                         send_message(UID, msg)
-                    if 'attachments' in message:
-                        img = message['attachments']['payload']['url']
-                        pprint("IMAGE: %s" % img)
-                        send_image(UID, img)
+                    if 'message' in message and 'attachments' in message['message']:
+                        for attachment in message['message']['attachments']:
+                            if attachment['payload']['type'] == 'image':
+                                img = attachment['payload']['url']
+                                pprint("IMAGE: %s" % img)
+                                send_image(UID, img)
             else:
                 #pprint(user.check(UID)['message'])
                 send_message(message['sender']['id'], "Need Setting")
