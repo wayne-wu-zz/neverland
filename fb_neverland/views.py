@@ -122,13 +122,16 @@ class NeverlandView(generic.View):
                 if 'message' in message and 'text' in message['message']:
                     msg = message['message']['text']
                     send_message(UID, msg)
-                if 'message' in message and 'attachments' in message['message'] and 'sticker_id' not in message['messsage']:
-                    pprint("Receive an image")
-                    for attachment in message['message']['attachments']:
-                        if attachment['type'] == 'image':
-                            img = attachment['payload']['url']
-                            pprint("IMAGE: %s" % img)
-                            send_buttons(UID, img)
+                if 'message' in message and 'attachments' in message['message']:
+                    if 'sticker_id' not in message['message']:
+                        pprint("Receive an image")
+                        for attachment in message['message']['attachments']:
+                            if attachment['type'] == 'image':
+                                img = attachment['payload']['url']
+                                pprint("IMAGE: %s" % img)
+                                send_buttons(UID, img)
+                    else:
+                        pprint("Receive a sticker")
                 if 'postback' in message:
                     handle_payload(UID, message['postback']['payload'])
 
