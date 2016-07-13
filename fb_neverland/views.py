@@ -69,7 +69,7 @@ def send_buttons(fb_id, img):
               {
                 "type":"postback",
                 "title":"Yes",
-                "payload": "YES!"
+                "payload": "USER_PRESSED_YES"
               },
               {
                 "type":"postback",
@@ -85,6 +85,10 @@ def send_buttons(fb_id, img):
     pprint(status.json())
 
 
+def handle_payload(UID, payload):
+    pprint("Handling payload")
+    if payload == "USER_PRESSED_YES":
+        send_message(UID, "You said yes!")
 
 # Create your views here.
 class NeverlandView(generic.View):
@@ -106,6 +110,7 @@ class NeverlandView(generic.View):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         pprint("print incoming_message:")
         pprint(incoming_message)
+
         for entry in incoming_message['entry']:
             pprint("Sender ID: ")
             pprint(entry['id'])
@@ -124,6 +129,8 @@ class NeverlandView(generic.View):
                                 pprint("IMAGE: %s" % img)
                                 #send_image(UID, img)
                                 send_buttons(UID, img)
+                    if 'postback' in message:
+                        handle_payload(UID, message['postback']['payload'])
 
             else:
                 #pprint(user.check(UID)['message'])
