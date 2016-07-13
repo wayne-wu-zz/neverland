@@ -251,10 +251,10 @@ class NeverlandView(generic.View):
                         text = msg['text']
                         item = handler.get_user(UID).temp
                         send_message(UID, "temp: %s" % item)
-                        user = handler.get_user(UID)
+                       
                         if item != "null":
                             handler.update_user(UID, {item:text})
-                            
+                            user = handler.get_user(UID)
                             pprint( "Item: %s, text: %s" % ( item,text ) )
                             if not handler.get_user(UID).flag:
                                 if item == "nick_name":
