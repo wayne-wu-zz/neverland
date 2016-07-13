@@ -100,7 +100,7 @@ class NeverlandView(generic.View):
     #GET request. Only called when it's hooked, by Facebook
     def get(self, request, *args, **kwargs):
         if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
-            get_started()
+            #get_started()
             return HttpResponse(self.request.GET['hub.challenge'])
         else:
             return HttpResponse('Error, invalid token')
