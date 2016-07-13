@@ -6,10 +6,15 @@ from django.views import generic
 from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from .models import *
+
 
 PAGE_ACCESS_TOKEN = "EAAXffOTVZAtYBAGrTcncAZBsl96bNfOuz6h15LnHkZBnqvJmoiaha02e6mcwiIZBSFUfBpZCRm2oVZBvZCDK4onG42AFE2IarwPG9pe5uZB1chCZBFZAOqAkZBWv0kPj9vDxjmnfl4f5yW6uGRnt1wyWkJPEjIOw5eiKjH78vg2V8KtngZDZD"
 VERIFY_TOKEN = "tinkerbell"
 FACEBOOK_GRAPH = "https://graph.facebook.com/v2.6/me"
+
+handler = Handler()
+
 
 def get_started():
     post_message_url = "%s/thread_settings?access_token=%s" % (FACEBOOK_GRAPH, PAGE_ACCESS_TOKEN)
@@ -244,24 +249,24 @@ class NeverlandView(generic.View):
                     if 'text' in msg:
                         text = msg['text']
                         item = handler.user.get_user(UID).temp
-                    if item != "null":
-                        handler.user.update_user(UID,{item=text})
-                        if not handler.user.get_user(UID).flag :
-                            if item == "nick_name":
-                                handle_payload(UID,"AGE_MIN")
-                            elif item == "preferred_age_below":
-                                handle_payload(UID,"AGE_MAX")
-                            elif temp == "preferred_age_above":
-                                handle_payload(UID,"USER_SET_GENDER")
-                    elif text == "settings":
-                        setting_buttons(UID)
-                    else:
-                        send_message(UID, text)
-
-                        if text == "settings":
-                            pass
+                        if item != "null":
+                            handler.update_user(UID, {item:text})
+                            if not handler.user.get_user(UID).flag :
+                                if item == "nick_name":
+                                    handle_payload(UID,"AGE_MIN")
+                                elif item == "preferred_age_below":
+                                    handle_payload(UID,"AGE_MAX")
+                                elif item == "preferred_age_above":
+                                    handle_payload(UID,"USER_SET_GENDER")
+                        elif text == "settings":
+                            setting_buttons(UID)
                         else:
                             send_message(UID, text)
+
+                            if text == "settings":
+                                pass
+                            else:
+                                send_message(UID, text)
                     elif 'attachments' in msg:
                         if 'sticker_id' in msg:
                             send_message(UID, "Oh, a sticker!")
