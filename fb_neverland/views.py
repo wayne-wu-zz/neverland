@@ -25,7 +25,6 @@ def get_started():
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
     pprint(status.json())
 
-
 def call_send_api(message_data):
     post_message_url = "%s/messages?access_token=%s" % (FACEBOOK_GRAPH, PAGE_ACCESS_TOKEN)
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=message_data)
@@ -82,6 +81,20 @@ def send_buttons(fb_id, img):
               }]}]}}}})
     call_send_api(message_data)
 
+def get_profile(UID):
+    user_url = "https://graph.facebook.com/v2.6/%s?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=%s" %(UID, PAGE_ACCESS_TOKEN)
+    response = requests.get(user_url)
+    if response.status_code == 200:
+        return response.json
+    else:
+        pprint("ERROR getting profile")
+        return None
+
+def initialize(UID):
+    profile = get_profile(UID)
+    pprint(profile)
+    send_message(UID, "Welcome!")
+
 def handle_payload(UID, payload):
     pprint("Handling payload..")
     if payload == "USER_PRESSED_YES":
@@ -91,7 +104,7 @@ def handle_payload(UID, payload):
     elif payload == "USER_PRESSED_GIVE_ME_MORE":
         send_message(UID, "Give me more!"),
     elif payload == "GET_STARTED":
-        send_message(UID, "Welcome!")
+        initialize(UID)
 
 
 # Create your views here.
