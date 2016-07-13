@@ -25,7 +25,7 @@ class NeverlandView(generic.View):
     def post(self, request, *args, **kwargs):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         for entry in incoming_message['entry']:
-            pprint(entry)
+            #pprint(entry)
             for message in entry:
                  if 'text' in message:
                      pprint(message['text'])
