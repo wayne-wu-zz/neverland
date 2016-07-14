@@ -243,8 +243,8 @@ class NeverlandView(generic.View):
             for message in entry['messaging']:
                 UID = message['sender']['id']
                 #send_message(UID, "UID: %s" % UID)
-                # if not handler.is_exists(UID):
-                #    handle_payload(UID, "GET_STARTED")
+                if not handler.is_exists(UID):
+                    handle_payload(UID, "GET_STARTED")
                 # #else:
                 if 'postback' in message:
                     handle_payload(UID, message['postback']['payload'])
@@ -288,10 +288,10 @@ class NeverlandView(generic.View):
                                 if attachment['type'] == 'image':
                                     img = attachment['payload']['url']
                                     pprint("IMAGE: %s" % img)
-                                    #item = handler.get_user(UID).temp
-                                    #if item == "profile_pic":
-                                    #    handler.update_user(UID,{item:img,"flag":True})
-                                    #    send_message(UID,"Done setting.")
+                                    item = handler.get_user(UID).temp
+                                    if item == "profile_pic":
+                                        handler.update_user(UID,{item:img,"flag":True})
+                                        send_message(UID,"Done setting.")
                                     send_choice(UID, img)
         return HttpResponse()
 
