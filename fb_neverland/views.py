@@ -96,17 +96,18 @@ def get_profile(UID):
 
 def initialize(UID):
     profile = get_profile(UID)
-    result = handler.check_user(UID)
-    pprint( result )
-    handler.update_user(UID, {'first_name': profile['first_name'], 'last_name':profile['last_name']})
-    handler.update_user(UID, {'temp':'nick_name'})
-    user = handler.get_user(UID)
-    send_message(UID, "Welcome %s! What would you like to be called?" % user.first_name)
+    if profile:
+      result = handler.check_user(UID)
+      pprint( result )
+      handler.update_user(UID, {'first_name': profile['first_name'], 'last_name':profile['last_name']})
+      handler.update_user(UID, {'temp':'nick_name'})
+      user = handler.get_user(UID)
+      send_message(UID, "Welcome %s! What would you like to be called?" % user.first_name)
 
 def submit_first_pic(UID):
     #submit the first picture to start
     send_message(UID, "Please submit a photo to start your journey!")
-    handler.update_user(UID,{'temp':'profile_pic'})
+    handler.update_user(UID,{'temp':'profile_pic'})f
 
 def setting_buttons(fb_id):
     message_data = json.dumps(
@@ -234,6 +235,7 @@ def user_pressed_yes( UID ):
     relation = handler.get_relation( rid )
     if UID == relation.uid1 :
         handler.update_relation( rid, { 'status1':1 } )
+        
         if  relation.status2 == 0: 
           refresh( UID )
         elif relation.status2 == 1:
@@ -247,6 +249,7 @@ def user_pressed_yes( UID ):
 
     else:
         handler.update_relation( rid, { 'status2':1 } )
+        
         if  relation.status1 == 0:
           refresh( UID )
         elif relation.status1 == 1:
@@ -294,7 +297,7 @@ def user_pressed_gmm( UID ):
 
 
 def handle_payload(UID, payload):
-    pprint("Handling payload..")
+    #pprint("Handling payload..")
     if payload == "USER_PRESSED_YES":
         #handler.update_relation
         user_pressed_yes( UID )
@@ -357,10 +360,10 @@ class NeverlandView(generic.View):
 
     #POST. Called when user is sends a message
     def post(self, request, *args, **kwargs):
-        pprint("Message received")
+        #pprint("Message received")
         incoming_message = json.loads(self.request.body.decode('utf-8'))
-        pprint("print incoming_message:")
-        pprint(incoming_message)
+        #pprint("print incoming_message:")
+        #pprint(incoming_message)
 
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
@@ -391,12 +394,12 @@ class NeverlandView(generic.View):
 
                             handler.update_user(UID, {item:text})
                             user = handler.get_user(UID)
-                            pprint( "Item: %s, text: %s" % ( item, text ) )
+                            #pprint( "Item: %s, text: %s" % ( item, text ) )
                             if not handler.get_user(UID).flag:
                                 if item == "nick_name":
                                     handle_payload(UID,"AGE_MIN")
                                     
-                                    pprint("Above: %s" % user.preferred_age_above)
+                                    #pprint("Above: %s" % user.preferred_age_above)
 
                                     #handler.update_user(UID, {'flag': True})
                                 elif item == "preferred_age_above":
@@ -422,7 +425,7 @@ class NeverlandView(generic.View):
                             for attachment in message['message']['attachments']:
                                 if attachment['type'] == 'image':
                                     img = attachment['payload']['url']
-                                    pprint("IMAGE: %s" % img)
+                                    #pprint("IMAGE: %s" % img)
                                     item = handler.get_user(UID).temp
                                     if item == "profile_pic":
                                         handler.update_user(UID,{item:img,'flag':True})
