@@ -220,27 +220,27 @@ def user_pressed_yes( UID ):
           refresh( UID )
 
 def user_pressed_no( UID ):
-  rid = handler.get_user_current_rid( UID )
-  relation = handler.get_relation( rid )
-  if UID == relation.uid1 :
-      handler.update_relation( rid, { 'status1':2 } )
-      refresh( UID )
+    rid = handler.get_user_current_rid( UID )
+    relation = handler.get_relation( rid )
+    if UID == relation.uid1 :
+        handler.update_relation( rid, { 'status1':2 } )
+        refresh( UID )
 
-  else:
-      handler.update_relation( rid, { 'status2':2 } )
-      refresh( UID )
+    else:
+        handler.update_relation( rid, { 'status2':2 } )
+        refresh( UID )
 
 def user_pressed_gmm( UID ):
     rid = handler.get_user_current_rid( UID )
     relation = handler.get_relation( rid )
     if UID == relation.uid1 :
-      handler.update_relation( rid, { 'status1':3 } )
-      if  relation.status2 == 0:
+        handler.update_relation( rid, { 'status1':3 } )
+        if relation.status2 == 0:
           refresh( UID )
-      elif relation.status2 == 1:
+        elif relation.status2 == 1:
           #todo match success
           refresh( UID )
-      elif relation.status2 == 2:
+        elif relation.status2 == 2:
           refresh( UID )
 
     else:
