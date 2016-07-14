@@ -57,7 +57,7 @@ class Handler:
         try:
             result = self.relation.get( id = rid )
         except ObjectDoesNotExist:
-            return { 'success': False, 'msg': 'relation not exists' }
+            return None
         
         return result
 
@@ -167,7 +167,7 @@ class Handler:
             round += 1
 
         if round >= 10:
-            return { 'success': False, 'msg': 'No more match can be found' }
+            return None
 
         rel = self.has_relation( uid, nuid )
         if rel is 0:
