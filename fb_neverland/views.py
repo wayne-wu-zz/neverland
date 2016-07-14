@@ -75,12 +75,12 @@ def send_choice(fb_id, img, nickname):
               },
               {
                 "type":"postback",
-                "title":u' :poop: ',
+                "title":u' 👻 NO 😜',
                 "payload":"USER_PRESSED_NO"
               },
               {
                 "type":"postback",
-                "title":"Give me more!",
+                "title":u'Give me more! 😍😍😍😍😍😍',
                 "payload":"USER_PRESSED_GIVE_ME_MORE"
               }]}]}}}})
     call_send_api(message_data)
@@ -184,7 +184,7 @@ def refresh(UID):
     rid = handler.get_next_relation(UID)
 
     if not rid:
-        send_message(UID, "No one around you right now")
+        send_message(UID, u'No one around you right now 🙀')
     else:
         relation = handler.get_relation(rid)
         if relation.uid1 == UID:
@@ -198,10 +198,8 @@ RELATION_NO   = 2
 RELATION_GMM  = 3
 
 def send_match( uid1, uid2 ):
-  send_message( uid1 , "Congradulations! Match Complete!")
-  send_message( uid2 , "Congradulations! Match Complete!")
-  send_message( uid1 , handler.get_user( uid2 ).first_name +  " "+handler.get_user( uid2 ).last_name )
-  send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
+  send_message( uid1 , "Congradulations! You're matched with "+handler.get_user( uid2 ).first_name+" "+handler.get_user( uid2 ).last_name )
+  send_message( uid2 , "Congradulations! You're matched with "+handler.get_user( uid1 ).first_name+" "+handler.get_user( uid1 ).last_name )
 
 
 def send_gmm_response( uid1,uid2 ):
@@ -217,16 +215,16 @@ def send_gmm_response( uid1,uid2 ):
          "elements":[{
             "title":"%s" %handler.get_user(uid2).nick_name,
             "image_url":img,
-            "subtitle": u"wants more photos. 💋💋💋💋💋",
+            "subtitle": u'wants more photos. 💋💋💋💋💋',
             "buttons":[
               {
                 "type":"postback",
-                "title": 'NO',
+                "title": u" 😑 NO  😒 🙄",
                 "payload": "GMM_REPLY_NO"
               },
               {
                 "type":"postback",
-                "title":"SEND MORE PHOTOS",
+                "title": u"SEND MORE PHOTOS 😽",
                 "payload":"GMM_REPLY_YES"
               }]}]}}}})
   call_send_api(message_data)
@@ -391,10 +389,10 @@ class NeverlandView(generic.View):
                         if item != "null":
 
                             if item == 'preferred_age_below' and not text.isdigit():
-                              send_message( UID, "invalid, it's not integer" )
+                              send_message( UID, "Invalid input!" )
                               return HttpResponse()
                             if item == 'preferred_age_above' and not text.isdigit():
-                              send_message( UID, "invalid, it's not integer" )
+                              send_message( UID, "Invalid input!" )
                               return HttpResponse()
 
 
