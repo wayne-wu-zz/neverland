@@ -197,8 +197,8 @@ RELATION_NO   = 2
 RELATION_GMM  = 3
 
 def send_match( uid1, uid2 ):
-  send_message( uid1 , handler.get_user( uid2 ).first_name +  " "+handler.get_user( uid2 ).last_name )
-  send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
+  send_message( uid1 , handler.get_user( uid2 ).first_name +  " " + handler.get_user( uid2 ).last_name )
+  send_message( uid2 , handler.get_user( uid1 ).first_name +  " " + handler.get_user( uid1 ).last_name )
   
 
 def send_gmm_response( uid1, uid2 ):
