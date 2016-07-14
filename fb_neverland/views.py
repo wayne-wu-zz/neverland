@@ -201,7 +201,7 @@ def user_pressed_yes( UID ):
   relation = handler.get_relation( rid )
   if UID == relation.uid1 :
       handler.update_relation( rid, { 'status1':1 } )
-      if  relation.status2 == 0:
+      if relation.status2 == 0:
           refresh( UID )
       elif relation.status2 == 1:
           #todo match success
@@ -211,7 +211,7 @@ def user_pressed_yes( UID ):
 
   else:
     handler.update_relation( rid, { 'status2':1 } )
-      if  relation.status1 == 0:
+      if relation.status1 == 0:
           refresh( UID )
       elif relation.status1 == 1:
           #todo match success
@@ -235,7 +235,7 @@ def user_pressed_gmm( UID ):
   relation = handler.get_relation( rid )
   if UID == relation.uid1 :
       handler.update_relation( rid, { 'status1':3 } )
-      if  relation.status2 == 0:
+      if relation.status2 == 0:
           refresh( UID )
       elif relation.status2 == 1:
           #todo match success
@@ -245,7 +245,7 @@ def user_pressed_gmm( UID ):
 
   else:
     handler.update_relation( rid, { 'status2':3 } )
-      if  relation.status1 == 0:
+      if relation.status1 == 0:
           refresh( UID )
       elif relation.status1 == 1:
           #todo match success
