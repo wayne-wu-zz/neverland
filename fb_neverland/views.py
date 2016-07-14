@@ -197,12 +197,37 @@ RELATION_NO   = 2
 RELATION_GMM  = 3
 
 def send_match( uid1, uid2 ):
+  send_message( uid1 , "Congradulations! Match Complete!")
+  send_message( uid2 , "Congradulations! Match Complete!")
   send_message( uid1 , handler.get_user( uid2 ).first_name +  " "+handler.get_user( uid2 ).last_name )
   send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
   
 
-def send_gmm_response( uid1, uid2 ):
-  return
+def send_gmm_response( uid1,uid2 ):
+  relation = handler.get_user_current_rid( uid1 )
+  if uid1 == relation.uid1:
+      img = relation.img21
+  else:
+      img = relation.img12
+  message_data = json.dumps(
+        {"recipient": {"id": uid1},
+         "message":{ "attachment":{"type":"template","payload":{"template_type":"generic",
+         "elements":[{
+            "title":"%s" %nickname,
+            "image_url":img,
+            "subtitle": handler.get_user(uid2).nick_name + " wants more photos.",
+            "buttons":[
+              {
+                "type":"postback",
+                "title": 'NO',
+                "payload": "GMM_REPLY_NO"
+              },
+              {
+                "type":"postback",
+                "title":"SEND MORE PHOTOS",
+                "payload":"GMM_REPLY_YES"
+              }]}]}}}})
+  call_send_api(message_data)
 
 def user_pressed_yes( UID ):
     rid = handler.get_user_current_rid( UID )
@@ -230,6 +255,8 @@ def user_pressed_yes( UID ):
           refresh( UID )
         elif relation.status1 == 2:
           refresh( UID )
+        elif relation.status1 == 3:
+          send_gmm_response( UID, relation.uid1 )
 
 def user_pressed_no( UID ):
     rid = handler.get_user_current_rid( UID )
@@ -306,6 +333,10 @@ def handle_payload(UID, payload):
         send_message(UID,"Preferred gender set to both.")
     elif payload == "REFRESH":
         refresh(UID)
+    elif payload == 'GMM_REPLY_YES':
+        pass
+    elif payload == 'GMM_REPLY_NO':
+        user_pressed_no( UID )
 
 
 
