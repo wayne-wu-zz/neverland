@@ -338,10 +338,10 @@ class NeverlandView(generic.View):
                        
                         if item != "null":
 
-                            if item == 'AGE_MIN' and not text.isdigit():
+                            if item == 'preferred_age_below' and not text.isdigit():
                               send_message( UID, "invalid, it's not integer" )
                               return HttpResponse()
-                            if item == 'AGE_MAX' and not text.isdigit():
+                            if item == 'preferred_age_above' and not text.isdigit():
                               send_message( UID, "invalid, it's not integer" )
                               return HttpResponse()
 
