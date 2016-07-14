@@ -23,15 +23,15 @@ class User( models.Model ):
     current_relation_id = models.IntegerField(u'current_relation_id',default=-1)
     temp = models.CharField( u'temp', max_length= 100, default="null" )
     state = models.CharField( u'state', max_length = 100, default="" )
-    profile_pic = models.CharField( u'profile_pic' , max_length=100, default="" )
+    profile_pic = models.CharField( u'profile_pic' , max_length=300, default="" )
 
 class Relation( models.Model ):
     uid1 = models.CharField(u'uid1', max_length=100, default = "")
     uid2 = models.CharField(u'uid2', max_length=100, default = "")
     msg12 = models.CharField( u'msg12', max_length = 100, default = "" )
     msg21 = models.CharField( u'msg21', max_length = 100, default = "" )
-    img12 = models.CharField( u'img12', max_length = 200, default = "" )
-    img21 = models.CharField( u'img21', max_length = 200, default = "" )    
+    img12 = models.CharField( u'img12', max_length = 300, default = "" )
+    img21 = models.CharField( u'img21', max_length = 300, default = "" )    
     status1 = models.IntegerField( u'status1' , default = 0 )
     status2 = models.IntegerField( u'status2' , default = 0)
 
