@@ -107,7 +107,7 @@ def initialize(UID):
 def submit_first_pic(UID):
     #submit the first picture to start
     send_message(UID, "Please submit a photo to start your journey!")
-    handler.update_user(UID,{'temp':'profile_pic'})f
+    handler.update_user(UID,{'temp':'profile_pic'})
 
 def setting_buttons(fb_id):
     message_data = json.dumps(
