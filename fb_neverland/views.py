@@ -444,9 +444,9 @@ class NeverlandView(generic.View):
                                         handler.update_user(UID,{"temp":"null"})
                                         if UID == rel.uid1:
                                             handler.update_relation(RID,{'img12':img,'status1':1})
-                                            send_choice(rel.uid2,img)
+                                            send_choice(rel.uid2,img,handler.get_user(UID).nick_name)
                                         else:
                                             handler.update_relation(RID,{'imt21':img,'status2':1})
-                                            send_choice(rel.uid1,img)
+                                            send_choice(rel.uid1,img,handler.get_user(UID).nick_name)
         return HttpResponse( )
 
