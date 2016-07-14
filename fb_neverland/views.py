@@ -377,7 +377,6 @@ class NeverlandView(generic.View):
                                         handler.update_user(UID, {"temp": "null"})
                                         refresh(UID)
                                     elif item == "null":
-
-
+                                    	
     		return HttpResponse(status_code = 200)
 
