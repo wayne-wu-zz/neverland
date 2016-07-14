@@ -202,9 +202,9 @@ def send_match( uid1, uid2 ):
   send_message( uid2 , "Congradulations! Match Complete!")
   send_message( uid1 , handler.get_user( uid2 ).first_name +  " "+handler.get_user( uid2 ).last_name )
   send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
-  
 
-def send_gmm_response( uid1,uid2 ):
+
+def send_gmm_response( uid1,uid2, nickname):
   relation = handler.get_user_current_rid( uid1 )
   if uid1 == relation.uid1:
       img = relation.img21
