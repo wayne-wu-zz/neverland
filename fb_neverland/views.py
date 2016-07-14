@@ -184,7 +184,6 @@ def refresh(UID):
 
     if not rid:
         send_message(UID, "No one around you right now")
-        return
     else:
         relation = handler.get_relation(rid)
         if relation.uid1 == UID:
