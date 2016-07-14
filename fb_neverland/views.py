@@ -318,13 +318,14 @@ class NeverlandView(generic.View):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         pprint("print incoming_message:")
         pprint(incoming_message)
-        return HttpResponse( )
+
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
                 #send_message(UID, "UID: %s" % UID)
                 if not handler.is_exists(UID):
                     handle_payload(UID, "GET_STARTED")
+                    return HttpResponse()
                 # #else:
                 if 'postback' in message:
                     handle_payload(UID, message['postback']['payload'])
