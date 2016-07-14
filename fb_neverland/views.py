@@ -196,6 +196,12 @@ RELATION_YES  = 1
 RELATION_NO   = 2
 RELATION_GMM  = 3
 
+def send_match( uid1, uid2 ):
+  send_message( uid1 , handler.get_user( uid2 ).first_name +  " "+handler.get_user( uid2 ).last_name )
+  send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
+  return
+
+
 def user_pressed_yes( UID ):
     rid = handler.get_user_current_rid( UID )
     relation = handler.get_relation( rid )
@@ -204,7 +210,7 @@ def user_pressed_yes( UID ):
         if  relation.status2 == 0:
           refresh( UID )
         elif relation.status2 == 1:
-          #todo match success
+          send_match( relation.uid1, relation.uid2 )
           refresh( UID )
         elif relation.status2 == 2:
           refresh( UID )
