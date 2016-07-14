@@ -130,9 +130,9 @@ class Handler:
         try:
             result = self.user.get( uid = uid )
         except ObjectDoesNotExist:
-            return { 'success': False, 'msg': 'User not exists' }
+            return False
 
-        return { 'success': True, 'rid': result.current_relation_id }
+        return result.current_relation_id 
     
     def update_user( self, uid , info ):
         try:
