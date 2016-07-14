@@ -1,5 +1,5 @@
 #from django.shortcuts import render
-
+# -*- coding: utf-8 -*-
 import json, requests, random, re
 from pprint import pprint
 from django.views import generic
@@ -70,7 +70,7 @@ def send_choice(fb_id, img, nickname):
             "buttons":[
               {
                 "type":"postback",
-                "title":"Yes",
+                "title": u'❤',
                 "payload": "USER_PRESSED_YES"
               },
               {
@@ -122,7 +122,7 @@ def setting_buttons(fb_id):
               },
               {
                 "type":"postback",
-                "title":"Set Gender Filter",
+                "title":"Which Gender do you prefer?",
                 "payload":"USER_SET_GENDER"
               },
               {
@@ -138,7 +138,7 @@ def setting_gender(fb_id):
         {"recipient": {"id": fb_id},
          "message":{ "attachment":{"type":"template","payload":{
          "template_type":"button",
-         "text":"Gender Filter",
+         "text":"Which gender do you prefer?",
          "buttons":[
               {
                 "type":"postback",
@@ -196,18 +196,29 @@ RELATION_YES  = 1
 RELATION_NO   = 2
 RELATION_GMM  = 3
 
+def send_match( uid1, uid2 ):
+  send_message( uid1 , handler.get_user( uid2 ).first_name +  " "+handler.get_user( uid2 ).last_name )
+  send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
+  
+
+def send_gmm_response( uid1, uid2 ):
+  return
+
 def user_pressed_yes( UID ):
     rid = handler.get_user_current_rid( UID )
     relation = handler.get_relation( rid )
     if UID == relation.uid1 :
         handler.update_relation( rid, { 'status1':1 } )
-        if  relation.status2 == 0:
+        if  relation.status2 == 0: 
           refresh( UID )
         elif relation.status2 == 1:
-          #todo match success
+          send_match( relation.uid1, relation.uid2 )
           refresh( UID )
         elif relation.status2 == 2:
           refresh( UID )
+
+        elif relation.status2 == 3:
+          send_gmm_response( UID, relation.uid2 )
 
     else:
         handler.update_relation( rid, { 'status2':1 } )
@@ -215,6 +226,7 @@ def user_pressed_yes( UID ):
           refresh( UID )
         elif relation.status1 == 1:
           #todo match success
+          send_match( relation.uid1, relation.uid2 )
           refresh( UID )
         elif relation.status1 == 2:
           refresh( UID )
@@ -274,10 +286,10 @@ def handle_payload(UID, payload):
     elif payload == "USER_SET_AGE":
         setting_age(UID)
     elif payload == "AGE_MIN":
-        send_message(UID,"Please enter a number for the minimum age.")
+        send_message(UID,"Please enter a number for the minimum age preferred.")
         handler.update_user(UID,{'temp':'preferred_age_above'})
     elif payload == "AGE_MAX":
-        send_message(UID,"Please enter a number for the maximum age.")
+        send_message(UID,"Please enter a number for the maximum age freferred.")
         handler.update_user(UID,{'temp':'preferred_age_below'})
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
@@ -325,6 +337,7 @@ class NeverlandView(generic.View):
                 #send_message(UID, "UID: %s" % UID)
                 if not handler.is_exists(UID):
                     handle_payload(UID, "GET_STARTED")
+                    return HttpResponse()
                 # #else:
                 if 'postback' in message:
                     handle_payload(UID, message['postback']['payload'])
@@ -336,6 +349,15 @@ class NeverlandView(generic.View):
                         #send_message(UID, "temp: %s" % item)
                        
                         if item != "null":
+
+                            if item == 'preferred_age_below' and not text.isdigit():
+                              send_message( UID, "invalid, it's not integer" )
+                              return HttpResponse()
+                            if item == 'preferred_age_above' and not text.isdigit():
+                              send_message( UID, "invalid, it's not integer" )
+                              return HttpResponse()
+
+
                             handler.update_user(UID, {item:text})
                             user = handler.get_user(UID)
                             pprint( "Item: %s, text: %s" % ( item, text ) )
@@ -360,8 +382,8 @@ class NeverlandView(generic.View):
                         elif text == "refresh":
                             handle_payload(UID, "REFRESH")
                         else:
-                            send_message(UID, text)
-
+                            #send_message(UID, text)
+                            a = 3
                     elif 'attachments' in msg:
                         if 'sticker_id' in msg:
                             send_message(UID, "Oh, a sticker!")
@@ -376,6 +398,5 @@ class NeverlandView(generic.View):
                                         send_message(UID, "Done setting. Let's get started now!")
                                         handler.update_user(UID, {"temp": "null"})
                                         refresh(UID)
-
-        return HttpResponse()
+        return HttpResponse( )
 
