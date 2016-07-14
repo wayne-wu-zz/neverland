@@ -308,7 +308,7 @@ def handle_payload(UID, payload):
         send_message(UID, "You said no!" )
     elif payload == "USER_PRESSED_GIVE_ME_MORE":
         user_pressed_gmm( UID )
-        send_message(UID, "You said give me more!")
+        send_message(UID, "You thirrrsty!")
     elif payload == "GET_STARTED":
         initialize(UID)
     elif payload == "USER_SET_NAME":
@@ -317,28 +317,28 @@ def handle_payload(UID, payload):
     elif payload == "USER_SET_AGE":
         setting_age(UID)
     elif payload == "AGE_MIN":
-        send_message(UID,"Please enter a number for the minimum age preferred.")
+        send_message(UID,"Please enter your preferred minimum age")
         handler.update_user(UID,{'temp':'preferred_age_above'})
     elif payload == "AGE_MAX":
-        send_message(UID,"Please enter a number for the maximum age freferred.")
+        send_message(UID,"Please enter your preferred maximum age")
         handler.update_user(UID,{'temp':'preferred_age_below'})
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
     elif payload == "GENDER_FEMALE":
         handler.update_user(UID,{'preferred_gender':0, 'temp':'profile_pic'})
-        send_message(UID,"Preferred gender set to female.")
+        send_message(UID,"Preferred gender is set to female.")
         if not handler.get_user(UID).flag:
-            send_message(UID,"Please upload your first picture.")
+            send_message(UID,"Please upload your first picture to start your journey")
     elif payload == "GENDER_MALE":
         handler.update_user(UID,{'preferred_gender':1, 'temp':'profile_pic'})
-        send_message(UID,"Preferred gender set to male.")
+        send_message(UID,"Preferred gender is set to male.")
         if not handler.get_user(UID).flag:
-            send_message(UID,"Please upload your first picture.")
+            send_message(UID,"Please upload your first picture to start your journey")
     elif payload == "GENDER_BOTH":
         handler.update_user(UID,{'preferred_gender':2, 'temp':'profile_pic'})
-        send_message(UID,"Preferred gender set to both.")
+        send_message(UID,"Preferred gender is set to both.")
         if not handler.get_user(UID).flag:
-            send_message(UID,"Please upload your first picture.")
+            send_message(UID,"Please upload your first picture to start your journey")
     elif payload == "REFRESH":
         refresh(UID)
     elif payload == 'GMM_REPLY_YES':
