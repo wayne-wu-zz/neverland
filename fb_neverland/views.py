@@ -197,26 +197,26 @@ RELATION_NO   = 2
 RELATION_GMM  = 3
 
 def user_pressed_yes( UID ):
-  rid = handler.get_user_current_rid( UID )
-  relation = handler.get_relation( rid )
-  if UID == relation.uid1 :
-      handler.update_relation( rid, { 'status1':1 } )
-      if  relation.status2 == 0:
+    rid = handler.get_user_current_rid( UID )
+    relation = handler.get_relation( rid )
+    if UID == relation.uid1 :
+        handler.update_relation( rid, { 'status1':1 } )
+        if  relation.status2 == 0:
           refresh( UID )
-      elif relation.status2 == 1:
+        elif relation.status2 == 1:
           #todo match success
           refresh( UID )
-      elif relation.status2 == 2:
+        elif relation.status2 == 2:
           refresh( UID )
 
-  else:
-    handler.update_relation( rid, { 'status2':1 } )
-      if  relation.status1 == 0:
+    else:
+        handler.update_relation( rid, { 'status2':1 } )
+        if  relation.status1 == 0:
           refresh( UID )
-      elif relation.status1 == 1:
+        elif relation.status1 == 1:
           #todo match success
           refresh( UID )
-      elif relation.status1 == 2:
+        elif relation.status1 == 2:
           refresh( UID )
 
 def user_pressed_no( UID ):
@@ -231,9 +231,9 @@ def user_pressed_no( UID ):
       refresh( UID )
 
 def user_pressed_gmm( UID ):
-  rid = handler.get_user_current_rid( UID )
-  relation = handler.get_relation( rid )
-  if UID == relation.uid1 :
+    rid = handler.get_user_current_rid( UID )
+    relation = handler.get_relation( rid )
+    if UID == relation.uid1 :
       handler.update_relation( rid, { 'status1':3 } )
       if  relation.status2 == 0:
           refresh( UID )
@@ -243,15 +243,15 @@ def user_pressed_gmm( UID ):
       elif relation.status2 == 2:
           refresh( UID )
 
-  else:
-    handler.update_relation( rid, { 'status2':3 } )
-      if  relation.status1 == 0:
-          refresh( UID )
-      elif relation.status1 == 1:
-          #todo match success
-          refresh( UID )
-      elif relation.status1 == 2:
-          refresh( UID )
+    else:
+        handler.update_relation( rid, { 'status2':3 } )
+        if relation.status1 == 0:
+              refresh( UID )
+        elif relation.status1 == 1:
+              #todo match success
+              refresh( UID )
+        elif relation.status1 == 2:
+              refresh( UID )
 
 
 def handle_payload(UID, payload):
