@@ -316,8 +316,8 @@ class NeverlandView(generic.View):
     def post(self, request, *args, **kwargs):
         pprint("Message received")
         incoming_message = json.loads(self.request.body.decode('utf-8'))
-        pprint("print incoming_message:")
-        pprint(incoming_message)
+        #pprint("print incoming_message:")
+        #pprint(incoming_message)
 
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
