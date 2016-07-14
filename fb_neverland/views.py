@@ -66,7 +66,7 @@ def send_choice(fb_id, img, nickname):
          "elements":[{
             "title":"%s" %nickname,
             "image_url":img,
-            "subtitle":"age " + random.randrange( 15 , 50 ), 
+            "subtitle":"age " + str(random.randrange( 15 , 50 )), 
             "buttons":[
               {
                 "type":"postback",
