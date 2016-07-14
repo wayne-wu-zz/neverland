@@ -85,15 +85,15 @@ class Handler:
             tmp2 = []
 
         if len(tmp) > 0:
-            if tmp.status1 == 2 or tmp.status2 == 2:
+            if tmp[0].status1 == 2 or tmp[0].status2 == 2:
                 return -1
-            if tmp.status1 == tmp.status2 and tmp.status1 == 1  : 
+            if tmp[0].status1 == tmp[0].status2 and tmp[0].status1 == 1  : 
                 return -1
 
         if len(tmp2) > 0:
-            if tmp2.status1 == 2 or tmp2.status2 == 2:
+            if tmp2[0].status1 == 2 or tmp2[0].status2 == 2:
                 return -1
-            if tmp2.status1 == tmp2.status2 and tmp2.status1 == 1:  
+            if tmp2[0].status1 == tmp2[0].status2 and tmp2[0].status1 == 1:  
                 return -1
 
 
