@@ -376,7 +376,5 @@ class NeverlandView(generic.View):
                                         send_message(UID, "Done setting. Let's get started now!")
                                         handler.update_user(UID, {"temp": "null"})
                                         refresh(UID)
-                                    elif item == "null":
-                                    	
-    		return HttpResponse(status_code = 200)
+        return HttpResponse( status_code=200 )
 
