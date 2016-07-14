@@ -205,7 +205,8 @@ def send_match( uid1, uid2 ):
 
 
 def send_gmm_response( uid1,uid2 ):
-  relation = handler.get_user_current_rid( uid1 )
+  RID = handler.get_user_current_rid( uid1 )
+  relation = handler.get_relation(RID)
   if uid1 == relation.uid1:
       img = relation.img21
   else:
