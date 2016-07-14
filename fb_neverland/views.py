@@ -326,18 +326,23 @@ def handle_payload(UID, payload):
     elif payload == "GENDER_FEMALE":
         handler.update_user(UID,{'preferred_gender':0, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to female.")
-        #if not handler.get_user(UID).flag:
-        #    send_message(UID,"Please upload your first picture.")
+        if not handler.get_user(UID).flag:
+            send_message(UID,"Please upload your first picture.")
     elif payload == "GENDER_MALE":
         handler.update_user(UID,{'preferred_gender':1, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to male.")
+        if not handler.get_user(UID).flag:
+            send_message(UID,"Please upload your first picture.")
     elif payload == "GENDER_BOTH":
         handler.update_user(UID,{'preferred_gender':2, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to both.")
+        if not handler.get_user(UID).flag:
+            send_message(UID,"Please upload your first picture.")
     elif payload == "REFRESH":
         refresh(UID)
     elif payload == 'GMM_REPLY_YES':
-        pass
+        send_message(UID,"Please upload another photo.")
+        handler.update_user(UID,{'temp':'gmm_pic'})
     elif payload == 'GMM_REPLY_NO':
         user_pressed_no( UID )
 
@@ -411,9 +416,9 @@ class NeverlandView(generic.View):
           
                                     handle_payload(UID,"USER_SET_GENDER")
 
-                        if text == "settings":
+                        if text.lower() == "settings":
                             setting_buttons(UID)
-                        elif text == "refresh":
+                        elif text.lower() == "refresh":
                             handle_payload(UID, "REFRESH")
                         else:
                             #send_message(UID, text)
@@ -432,5 +437,15 @@ class NeverlandView(generic.View):
                                         send_message(UID, "Done setting. Let's get started now!")
                                         handler.update_user(UID, {"temp": "null"})
                                         refresh(UID)
+                                    elif item == "gmm_pic":
+                                        RID = handler.get_user_current_rid(UID)
+                                        rel = handler.get_relation(RID)
+                                        handler.update_user(UID,{"temp":"null"})
+                                        if UID == rel.uid1:
+                                            handler.update_relation(RID,{'img12':img,'status1':1})
+                                            send_choice(rel.uid2,img)
+                                        else:
+                                            handler.update_relation(RID,{'imt21':img,'status2':1})
+                                            send_choice(rel.uid1,img)
         return HttpResponse( )
 
