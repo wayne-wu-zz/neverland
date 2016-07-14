@@ -228,7 +228,7 @@ def handle_payload(UID, payload):
         handler.update_user(UID,{'preferred_gender':2, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to both.")
     elif payload == "REFRESH":
-        handler.get_next_relation(UID)
+        refresh(UID)
 
 
 
