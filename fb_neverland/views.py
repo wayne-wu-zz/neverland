@@ -318,7 +318,7 @@ class NeverlandView(generic.View):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         pprint("print incoming_message:")
         pprint(incoming_message)
-
+        return HttpResponse( )
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
@@ -376,5 +376,5 @@ class NeverlandView(generic.View):
                                         send_message(UID, "Done setting. Let's get started now!")
                                         handler.update_user(UID, {"temp": "null"})
                                         refresh(UID)
-        return HttpResponse( status_code=200 )
+        return HttpResponse( )
 
