@@ -192,14 +192,80 @@ def refresh(UID):
         else:
             send_choice(UID, relation.img12, handler.get_user(relation.uid1).nick_name)
 
+RELATION_NONE = 0
+RELATION_YES  = 1
+RELATION_NO   = 2
+RELATION_GMM  = 3
+
+def user_pressed_yes( UID ):
+  rid = handler.get_user_current_rid( UID )
+  relation = handler.get_relation( rid )
+  if UID == relation.uid1 :
+      handler.update_relation( rid, { 'status1':1 } )
+      if  relation.status2 == 0:
+          refresh( UID )
+      elif relation.status2 == 1:
+          #todo match success
+          refresh( UID )
+      elif relation.status2 == 2:
+          refresh( UID )
+
+  else:
+    handler.update_relation( rid, { 'status2':1 } )
+      if  relation.status1 == 0:
+          refresh( UID )
+      elif relation.status1 == 1:
+          #todo match success
+          refresh( UID )
+      elif relation.status1 == 2:
+          refresh( UID )
+
+def user_pressed_no( UID ):
+  rid = handler.get_user_current_rid( UID )
+  relation = handler.get_relation( rid )
+  if UID == relation.uid1 :
+      handler.update_relation( rid, { 'status1':2 } )
+      refresh( UID )
+
+  else:
+      handler.update_relation( rid, { 'status2':2 } )
+      refresh( UID )
+
+def user_pressed_gmm( UID ):
+  rid = handler.get_user_current_rid( UID )
+  relation = handler.get_relation( rid )
+  if UID == relation.uid1 :
+      handler.update_relation( rid, { 'status1':3 } )
+      if  relation.status2 == 0:
+          refresh( UID )
+      elif relation.status2 == 1:
+          #todo match success
+          refresh( UID )
+      elif relation.status2 == 2:
+          refresh( UID )
+
+  else:
+    handler.update_relation( rid, { 'status2':3 } )
+      if  relation.status1 == 0:
+          refresh( UID )
+      elif relation.status1 == 1:
+          #todo match success
+          refresh( UID )
+      elif relation.status1 == 2:
+          refresh( UID )
+
+
 def handle_payload(UID, payload):
     pprint("Handling payload..")
     if payload == "USER_PRESSED_YES":
         #handler.update_relation
+        user_pressed_yes( UID )
         send_message(UID, "You said yes!")
     elif payload == "USER_PRESSED_NO":
+        user_pressed_no( UID )
         send_message(UID, "You said no!" )
     elif payload == "USER_PRESSED_GIVE_ME_MORE":
+        user_pressed_gmm( UID )
         send_message(UID, "You said give me more!")
     elif payload == "GET_STARTED":
         initialize(UID)
