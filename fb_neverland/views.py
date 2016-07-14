@@ -70,7 +70,7 @@ def send_choice(fb_id, img, nickname):
             "buttons":[
               {
                 "type":"postback",
-                "title":"Yes",
+                "title":"❤",
                 "payload": "USER_PRESSED_YES"
               },
               {
@@ -122,7 +122,7 @@ def setting_buttons(fb_id):
               },
               {
                 "type":"postback",
-                "title":"Set Gender Filter",
+                "title":"Which Gender do you prefer?",
                 "payload":"USER_SET_GENDER"
               },
               {
@@ -138,7 +138,7 @@ def setting_gender(fb_id):
         {"recipient": {"id": fb_id},
          "message":{ "attachment":{"type":"template","payload":{
          "template_type":"button",
-         "text":"Gender Filter",
+         "text":"Which gender do you prefer?",
          "buttons":[
               {
                 "type":"postback",
@@ -274,10 +274,10 @@ def handle_payload(UID, payload):
     elif payload == "USER_SET_AGE":
         setting_age(UID)
     elif payload == "AGE_MIN":
-        send_message(UID,"Please enter a number for the minimum age.")
+        send_message(UID,"Please enter a number for the minimum age preferred.")
         handler.update_user(UID,{'temp':'preferred_age_above'})
     elif payload == "AGE_MAX":
-        send_message(UID,"Please enter a number for the maximum age.")
+        send_message(UID,"Please enter a number for the maximum age freferred.")
         handler.update_user(UID,{'temp':'preferred_age_below'})
     elif payload == "USER_SET_GENDER":
         setting_gender(UID)
@@ -337,6 +337,15 @@ class NeverlandView(generic.View):
                         #send_message(UID, "temp: %s" % item)
                        
                         if item != "null":
+
+                            if item == 'AGE_MIN' and not text.isdigit():
+                              send_message( UID, "invalid, it's not integer" )
+                              return HttpResponse()
+                            if item == 'AGE_MAX' and not text.isdigit():
+                              send_message( UID, "invalid, it's not integer" )
+                              return HttpResponse()
+
+
                             handler.update_user(UID, {item:text})
                             user = handler.get_user(UID)
                             pprint( "Item: %s, text: %s" % ( item, text ) )
@@ -361,8 +370,8 @@ class NeverlandView(generic.View):
                         elif text == "refresh":
                             handle_payload(UID, "REFRESH")
                         else:
-                            send_message(UID, text)
-
+                            #send_message(UID, text)
+                            a = 3
                     elif 'attachments' in msg:
                         if 'sticker_id' in msg:
                             send_message(UID, "Oh, a sticker!")

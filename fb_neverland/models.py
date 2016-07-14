@@ -162,11 +162,11 @@ class Handler:
     def get_next_relation( self, uid ):
         nuid = self.get_random_user().uid
         round = 0
-        while round < 5 and self.has_relation( uid, nuid ) == -1:
+        while round < 10 and self.has_relation( uid, nuid ) == -1:
             nuid = self.get_random_user().uid
             round += 1
 
-        if round >= 5:
+        if round >= 10:
             return { 'success': False, 'msg': 'No more match can be found' }
 
         rel = self.has_relation( uid, nuid )
