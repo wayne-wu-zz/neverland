@@ -1,0 +1,12 @@
+//Menu
+curl -X POST -H "Content-Type: application/json" -d '{
+  "setting_type" : "call_to_actions",
+  "thread_state" : "existing_thread",
+  "call_to_actions":[
+    {
+      "type":"postback",
+      "title":"Refresh",
+      "payload":"REFRESH"
+    }
+  ]
+}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAXffOTVZAtYBAJo5ghtI5X10bIQgjQKZAgnvAjTgXFHbvisxsPwlQysdZChKvF7vu30MyxV3pccn37PuhPjE6WakRmvKsNeAAMZBycZBjYNeFPTOV9FQIkOko1uIZBn9EXQQMIF3M66MqA5XpWGeflawrx4bd06C0ZBfTZBhaG5EwZDZD"
