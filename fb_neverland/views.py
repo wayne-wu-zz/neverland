@@ -1,5 +1,5 @@
 #from django.shortcuts import render
-
+# -*- coding: utf-8 -*-
 import json, requests, random, re
 from pprint import pprint
 from django.views import generic
