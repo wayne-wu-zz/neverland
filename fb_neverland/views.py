@@ -179,6 +179,19 @@ def setting_age(fb_id):
               }}}})
     call_send_api(message_data)
 
+def refresh(UID):
+    rid = handler.get_next_relation(UID)
+
+    if not rid:
+        send_message(UID, "No one around you right now")
+        return
+    else:
+        relation = handler.get_relation(rid)
+        if relation.uid1 == UID:
+            send_choice(UID, relation.img21)
+        else:
+            send_choice(UID, relation.img12)
+
 def handle_payload(UID, payload):
     pprint("Handling payload..")
     if payload == "USER_PRESSED_YES":
@@ -214,6 +227,8 @@ def handle_payload(UID, payload):
     elif payload == "GENDER_BOTH":
         handler.update_user(UID,{'preferred_gender':2, 'temp':'profile_pic'})
         send_message(UID,"Preferred gender set to both.")
+    elif payload == "REFRESH":
+        handler.get_next_relation(UID)
 
 
 
@@ -277,6 +292,8 @@ class NeverlandView(generic.View):
 
                         if text == "settings":
                             setting_buttons(UID)
+                        elif text == "refresh":
+                            handle_payload(UID, "REFRESH")
                         else:
                             send_message(UID, text)
 
@@ -291,21 +308,9 @@ class NeverlandView(generic.View):
                                     item = handler.get_user(UID).temp
                                     if item == "profile_pic":
                                         handler.update_user(UID,{item:img,'flag':True})
-                                        user = handler.get_user(UID)
-                                        rid = handler.get_next_relation( UID )
-                                        if not rid:
-                                            continue
+                                        send_message(UID, "Done setting. Let's get started now!")
+                                        handler.update_user(UID, {"temp": "null"})
+                                        refresh(UID)
 
-                                        relation = handler.get_relation( rid )
-                                        if relation.uid1 == UID :
-                                            send_choice( UID, relation.img21 )
-
-                                        else:
-                                            send_choice( UID, relation.img12 )
-
-                                        #send_choice(UID,user.profile_pic)
-                                        #send_message(UID,"Done setting.")
-                                    #send_choice(UID, img)
-                                    handler.update_user(UID, {"temp":"null"})
         return HttpResponse()
 
