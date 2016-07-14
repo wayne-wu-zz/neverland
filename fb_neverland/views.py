@@ -66,7 +66,7 @@ def send_choice(fb_id, img, nickname):
          "elements":[{
             "title":"%s" %nickname,
             "image_url":img,
-            "subtitle":"description",
+            "subtitle":"age " + random.randrange( 15 , 50 ), 
             "buttons":[
               {
                 "type":"postback",
@@ -75,7 +75,7 @@ def send_choice(fb_id, img, nickname):
               },
               {
                 "type":"postback",
-                "title":"No",
+                "title":u' :poop: ',
                 "payload":"USER_PRESSED_NO"
               },
               {
@@ -204,7 +204,7 @@ def send_match( uid1, uid2 ):
   send_message( uid2 , handler.get_user( uid1 ).first_name +  " "+handler.get_user( uid1 ).last_name )  
 
 
-def send_gmm_response( uid1,uid2, nickname):
+def send_gmm_response( uid1,uid2 ):
   relation = handler.get_user_current_rid( uid1 )
   if uid1 == relation.uid1:
       img = relation.img21
@@ -214,9 +214,9 @@ def send_gmm_response( uid1,uid2, nickname):
         {"recipient": {"id": uid1},
          "message":{ "attachment":{"type":"template","payload":{"template_type":"generic",
          "elements":[{
-            "title":"%s" %nickname,
+            "title":"%s" %handler.get_user(uid2).nick_name,
             "image_url":img,
-            "subtitle": handler.get_user(uid2).nick_name + " wants more photos.",
+            "subtitle": u"wants more photos. 💋💋💋💋💋",
             "buttons":[
               {
                 "type":"postback",
