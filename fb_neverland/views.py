@@ -292,7 +292,18 @@ class NeverlandView(generic.View):
                                     if item == "profile_pic":
                                         handler.update_user(UID,{item:img,'flag':True})
                                         user = handler.get_user(UID)
-                                        send_choice(UID,user.profile_pic)
+                                        rid = handler.get_next_relation( UID )
+                                        if not rid:
+                                            continue
+
+                                        relation = handler.get_relation( rid )
+                                        if relation.uid1 == UID :
+                                            send_choice( UID, relation.img21 )
+
+                                        else:
+                                            send_choice( UID, relation.img12 )
+
+                                        #send_choice(UID,user.profile_pic)
                                         #send_message(UID,"Done setting.")
                                     #send_choice(UID, img)
                                     handler.update_user(UID, {"temp":"null"})

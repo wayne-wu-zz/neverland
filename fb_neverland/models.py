@@ -62,7 +62,10 @@ class Handler:
         return result
 
     def create_relation( self, uid1, uid2 ):
-        relation = Relation( uid1 = uid1, uid2 = uid2 )
+        relation = Relation( uid1 = uid1, uid2 = uid2 
+            , img12 = self.get_user( uid1 ).profile_pic
+            , img21 = self.get_user( uid2 ).profile_pic
+        )
         relation.save()
         return relation.id
 
@@ -173,7 +176,7 @@ class Handler:
         try:
             result = self.user.get( uid = uid )
         except ObjectDoesNotExist:
-            return { 'success': False, 'msg': 'User not exists' }
+            return None
 
         setattr( result, 'current_relation_id' , rel )
         result.save()
