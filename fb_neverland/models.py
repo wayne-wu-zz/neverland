@@ -70,7 +70,7 @@ class Handler:
         return relation.id
 
     def has_relation( self, uid1, uid2 ):
-        if uid1 == uid2:
+        if uid1 == uid2 or not self.get_user(uid1).flag or not self.get_user(uid2).flag:
             return -1
         if len( self.relation.all() ) == 0:
             return 0

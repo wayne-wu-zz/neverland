@@ -59,12 +59,12 @@ def send_image(fb_id, image_url):
     )
     call_send_api(message_data)
 
-def send_choice(fb_id, img):
+def send_choice(fb_id, img, nickname):
     message_data = json.dumps(
         {"recipient": {"id": fb_id},
          "message":{ "attachment":{"type":"template","payload":{"template_type":"generic",
          "elements":[{
-            "title":"Name",
+            "title":"%s" %nickname,
             "image_url":img,
             "subtitle":"description",
             "buttons":[
@@ -188,9 +188,9 @@ def refresh(UID):
     else:
         relation = handler.get_relation(rid)
         if relation.uid1 == UID:
-            send_choice(UID, relation.img21)
+            send_choice(UID, relation.img21, handler.get_user(relation.uid2).nick_name)
         else:
-            send_choice(UID, relation.img12)
+            send_choice(UID, relation.img12, handler.get_user(relation.uid1).nick_name)
 
 def handle_payload(UID, payload):
     pprint("Handling payload..")
