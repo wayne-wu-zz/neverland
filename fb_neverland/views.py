@@ -290,10 +290,10 @@ class NeverlandView(generic.View):
                                     pprint("IMAGE: %s" % img)
                                     item = handler.get_user(UID).temp
                                     if item == "profile_pic":
-                                        send_choice(UID,img)
-                                    #    handler.update_user(UID,{item:img,"flag":True})
-                                    #    handler.update_user(UID,)
-                                    #    send_message(UID,"Done setting.")
+                                        handler.update_user(UID,{item:img,"flag":True})
+                                        user = handler.get_user(UID)
+                                        send_choice(UID,user.profile_pic)
+                                        #send_message(UID,"Done setting.")
                                     #send_choice(UID, img)
                                     handler.update_user(UID, {"temp":"null"})
         return HttpResponse()
