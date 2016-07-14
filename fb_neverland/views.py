@@ -318,8 +318,7 @@ class NeverlandView(generic.View):
         incoming_message = json.loads(self.request.body.decode('utf-8'))
         pprint("print incoming_message:")
         pprint(incoming_message)
-        return HttpResponse(status_code = 200)
-        
+
         for entry in incoming_message['entry']:
             for message in entry['messaging']:
                 UID = message['sender']['id']
