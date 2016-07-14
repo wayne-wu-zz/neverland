@@ -84,16 +84,31 @@ class Handler:
         except ObjectDoesNotExist:
             tmp2 = []
 
-        if len(tmp) > 0 and tmp[0].status1 == 0:
-            return tmp[0].id
+        if len(tmp) > 0:
+            if tmp.status1 == 2 or tmp.status2 == 2:
+                return -1
+            if tmp.status1 == tmp.status2 and tmp.status1 == 1   
+                return -1
 
-        if len(tmp2) > 0 and tmp2[0].status2 == 0:
-            return tmp2[0].id
+        if len(tmp2) > 0:
+            if tmp2.status1 == 2 or tmp2.status2 == 2:
+                return -1
+            if tmp2.status1 == tmp2.status2 and tmp2.status1 == 1   
+                return -1
+
+
 
         if len(tmp) == 0 and len(tmp2) == 0:
-            return 0
-        else:
-            return -1
+            return 0 
+
+
+        if len(tmp) :
+            return tmp[0].id
+
+        if len(tmp2):
+            return tmp2[0].id
+            
+        return -1
 
     def get_user( self, uid ):
         #try:
