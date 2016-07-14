@@ -70,7 +70,7 @@ def send_choice(fb_id, img, nickname):
             "buttons":[
               {
                 "type":"postback",
-                "title":"❤",
+                "title": u'❤',
                 "payload": "USER_PRESSED_YES"
               },
               {
